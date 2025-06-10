@@ -31,13 +31,21 @@ public class BaseFlight
         }
         private set { } 
     }
-
     public decimal TotalPrice 
     {
         get
         {
             return Segments.Sum(s => s.FareDetails.TotalPrice);
         }
+        private set { }
+    }
+    public int AvailableSeats
+    {
+        get
+        {
+            return Segments.Min(s => s.AvailableSeats);
+        }
+
         private set { }
     }
 }
