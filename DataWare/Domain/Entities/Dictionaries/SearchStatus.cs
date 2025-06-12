@@ -5,9 +5,10 @@ namespace Domain.Entities.Dictionaries;
 
 public class SearchStatus
 {
-    public static readonly SearchStatus Pending = new(1, "", "");
-    public static readonly SearchStatus Completed = new(2, "", "");
-    public static readonly SearchStatus Failed = new(3, "", "");
+    public static readonly SearchStatus Created = new(1, "CREATED", "Создан");
+    public static readonly SearchStatus Pending = new(2, "PENDING", "В обработке");
+    public static readonly SearchStatus Completed = new(3, "COMPLETED", "Завершён");
+    public static readonly SearchStatus Failed = new(4, "FAILED", "Ошибка");
 
     public int Id { get; private set; }
     public string Code { get; private set; }
@@ -22,6 +23,7 @@ public class SearchStatus
 
     private static readonly Dictionary<int, SearchStatus> _byId = new Dictionary<int, SearchStatus>()
     {
+        { Created.Id, Created },
         { Pending.Id, Pending },
         { Completed.Id, Completed },
         { Failed.Id, Failed },

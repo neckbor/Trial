@@ -51,6 +51,6 @@ public class SearchRequest : Entity<Guid>
             return Result.Failure<SearchRequest>(DomainErrors.SearchRequest.InvalidDepartureDate);
         }
 
-        return new SearchRequest(Guid.NewGuid(), SearchStatus.Pending, clientId, from, to, departureDate, passengerCount, now);
+        return new SearchRequest(Guid.NewGuid(), SearchStatus.Created, clientId, from, to, departureDate, passengerCount, now);
     }
 }
