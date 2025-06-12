@@ -10,4 +10,11 @@ public static class DomainErrors
             "BookingStatus.NotFound",
             "Не найден статус бронирования.");
     }
+
+    public static class DocumentType
+    {
+        public static readonly Error NotFound = Error.NotFound(
+            "BookingStatus.DocumentType",
+            "Не найден тип документа.");
+    }
 }
