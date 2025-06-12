@@ -4,4 +4,5 @@ public interface IRepository<TEntity, in TKey> : IReadOnlyRepository<TEntity, TK
     where TEntity : Entity<TKey>
     where TKey : IComparable
 {
+    Task InsertAsync(TEntity entity);
 }
