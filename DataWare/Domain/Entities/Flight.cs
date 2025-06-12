@@ -6,6 +6,7 @@ public class Flight
 {
     private readonly List<FlightSegment> _flightSegments = [];
 
+    public Booking Booking { get; private set; }
     public Airport From { get; private set; }
     public Airport To { get; private set; }
     public DateTime DepartureDate { get; private set; }
@@ -18,6 +19,7 @@ public class Flight
     private Flight() { }
 
     private Flight(
+        Booking booking,
         Airport from,
         Airport to,
         DateTime departureDate,
@@ -25,6 +27,7 @@ public class Flight
         TicketingProvider ticketingProvider,
         decimal totalPrice)
     {
+        Booking = booking;
         From = from;
         To = to;
         DepartureDate = departureDate;
@@ -33,9 +36,10 @@ public class Flight
         TotalPrice = totalPrice;
     }
 
-    internal static Flight Create(BaseFlight flightModel)
+    internal static Flight Create(Booking booking, BaseFlight flightModel)
     {
         var flight = new Flight(
+            booking,
             flightModel.From,
             flightModel.To,
             flightModel.DepartureDate,
