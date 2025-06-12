@@ -40,7 +40,7 @@ internal class FlightSearchService : IFlightSearchService
         }
         var toAirport = getToAirportResult.Value;
 
-        var createSearchRequestResult = SearchRequest.Create(command.ClientId, fromAirport, toAirport, command.DepartureDate, command.PassengerCount);
+        var createSearchRequestResult = SearchRequest.Create(command.ClientId, fromAirport, toAirport, command.DepartureDateUtc, command.PassengerCount);
         if (createSearchRequestResult.IsFailure) 
         {
             // log warning
