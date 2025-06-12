@@ -1,5 +1,7 @@
 ﻿using Domain.Entities.Dictionaries;
+using Domain.Errors;
 using Domain.Models;
+using Domain.Shared;
 
 namespace Domain.Entities;
 
@@ -28,8 +30,19 @@ public class FlightSegment
         ArrivalDateUtc = arrivalDateUtc;
     }
 
-    internal static FlightSegment Create(Flight flight, BaseSegment segmentModel)
+    internal static Result<FlightSegment> Create(Flight flight, BaseSegment segmentModel)
     {
-        return new(flight, segmentModel.Airline, segmentModel.From, segmentModel.To, segmentModel.DepartureDateUtc, segmentModel.ArrivalDateUtc);
+        if (segmentModel.DepartureDateUtc >= segmentModel.ArrivalDateUtc) 
+        {
+            return Result.Failure<FlightSegment>(DomainErrors.FlightSegment.InvalidSegmentDates);
+        }
+
+        return new FlightSegment(
+            flight, 
+            segmentModel.Airline, 
+            segmentModel.From, 
+            segmentModel.To, 
+            segmentModel.DepartureDateUtc, 
+            segmentModel.ArrivalDateUtc);
     }
 }

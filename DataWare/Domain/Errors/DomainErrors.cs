@@ -17,4 +17,11 @@ public static class DomainErrors
             "BookingStatus.DocumentType",
             "Не найден тип документа.");
     }
+
+    public static class FlightSegment
+    {
+        public static readonly Error InvalidSegmentDates = Error.Validation(
+            "FlightSegment.InvalidSegmentDates",
+            "Некорректные даты отправления/прибытия");
+    }
 }

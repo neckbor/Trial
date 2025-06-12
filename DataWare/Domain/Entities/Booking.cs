@@ -1,5 +1,6 @@
 ﻿using Domain.Entities.Dictionaries;
 using Domain.Models;
+using Domain.Shared;
 
 namespace Domain.Entities;
 
@@ -29,7 +30,7 @@ public class Booking
         ClientId = clientId;
     }
 
-    public static Booking Create(
+    public static Result<Booking> Create(
         List<BaseFlight> flightData,
         List<Passenger> passengers,
         string clientId)
@@ -45,14 +46,26 @@ public class Booking
 
         foreach (var flight in flightData) 
         {
-            booking.AddFlight(flight);
+            var createFlightResult = booking.AddFlight(flight);
+            if (createFlightResult.IsFailure)
+            {
+                return Result.Failure<Booking>(createFlightResult.Error);
+            }
         }
 
         return booking;
     }
 
-    private void AddFlight(BaseFlight flightModel)
+    private Result AddFlight(BaseFlight flightModel)
     {
-        _flights.Add(Flight.Create(this, flightModel));
+        var createFlightResult = Flight.Create(this, flightModel);
+        if (createFlightResult.IsFailure) 
+        {
+            return Result.Failure(createFlightResult.Error);
+        }
+
+        _flights.Add(createFlightResult.Value);
+
+        return Result.Success();
     }
 }

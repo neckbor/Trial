@@ -1,5 +1,6 @@
 ﻿using Domain.Entities.Dictionaries;
 using Domain.Models;
+using Domain.Shared;
 
 namespace Domain.Entities;
 
@@ -37,7 +38,7 @@ public class Flight
         TotalPrice = totalPrice;
     }
 
-    internal static Flight Create(Booking booking, BaseFlight flightModel)
+    internal static Result<Flight> Create(Booking booking, BaseFlight flightModel)
     {
         var flight = new Flight(
             booking,
@@ -50,14 +51,26 @@ public class Flight
 
         foreach (var segmentModel in flightModel.Segments) 
         {
-            flight.AddSegment(segmentModel);
+            var createFlightSegmentResult = flight.AddSegment(segmentModel);
+            if (createFlightSegmentResult.IsFailure)
+            {
+                return Result.Failure<Flight>(createFlightSegmentResult.Error);
+            }
         }
 
         return flight;
     }
 
-    private void AddSegment(BaseSegment segment)
+    private Result AddSegment(BaseSegment segment)
     {
-        _flightSegments.Add(FlightSegment.Create(this, segment));
+        var createFlightSegmentResult = FlightSegment.Create(this, segment);
+        if (createFlightSegmentResult.IsFailure)
+        {
+            return Result.Failure(createFlightSegmentResult.Error);
+        }
+
+        _flightSegments.Add(createFlightSegmentResult.Value);
+
+        return Result.Success();
     }
 }
