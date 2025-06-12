@@ -4,7 +4,7 @@ using Domain.Shared;
 
 namespace Application.Dictionaries.Airports;
 
-public class AirportService : IAirportService
+internal class AirportService : IAirportService
 {
     private readonly IAirportRepository _airportRepository;
 
