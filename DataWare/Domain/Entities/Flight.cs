@@ -1,10 +1,11 @@
 ﻿using Domain.Entities.Dictionaries;
 using Domain.Models;
+using Domain.Primitives;
 using Domain.Shared;
 
 namespace Domain.Entities;
 
-public class Flight
+public class Flight : Entity<Guid>
 {
     private readonly List<FlightSegment> _flightSegments = [];
 

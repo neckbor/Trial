@@ -1,11 +1,11 @@
 ﻿using Domain.Entities.Dictionaries;
+using Domain.Primitives;
 using Domain.Shared;
 
 namespace Domain.Entities;
 
-public class SearchRequest
+public class SearchRequest : Entity<Guid>
 {
-    public Guid Id { get; private set; }
     public SearchStatus Status { get; private set; }
     public string ClientId { get; private set; }
     public Airport From { get; private set; }

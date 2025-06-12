@@ -1,10 +1,10 @@
 ﻿using Domain.Entities.Dictionaries;
+using Domain.Primitives;
 
 namespace Domain.Entities;
 
-public class Passenger
+public class Passenger : Entity<Guid>
 {
-    public Guid Id { get; private set; }
     public string Name { get; private set; }
     public string Surname { get; private set; }
     public string? MiddleName { get; private set; }

@@ -1,8 +1,9 @@
-﻿namespace Domain.Entities.Dictionaries;
+﻿using Domain.Primitives;
 
-public class TicketingProvider
+namespace Domain.Entities.Dictionaries;
+
+public class TicketingProvider : Entity<int>
 {
-    public int Id { get; private set; }
     public string Code { get; private set; }
     public string Name { get; private set; }
 

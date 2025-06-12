@@ -1,11 +1,12 @@
 ﻿using Domain.Entities.Dictionaries;
 using Domain.Errors;
 using Domain.Models;
+using Domain.Primitives;
 using Domain.Shared;
 
 namespace Domain.Entities;
 
-public class FlightSegment
+public class FlightSegment : Entity<Guid>
 {
     public Flight Flight { get; private set; }
     public Airline Airline { get; private set; }

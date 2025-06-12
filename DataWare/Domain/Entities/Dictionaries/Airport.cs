@@ -1,8 +1,9 @@
-﻿namespace Domain.Entities.Dictionaries;
+﻿using Domain.Primitives;
 
-public class Airport
+namespace Domain.Entities.Dictionaries;
+
+public class Airport : Entity<long>
 {
-    public long Id { get; private set; }
     public string IATACode { get; private set; }
     public string Name { get; private set; }
 

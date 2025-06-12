@@ -1,15 +1,15 @@
 ﻿using Domain.Entities.Dictionaries;
 using Domain.Models;
+using Domain.Primitives;
 using Domain.Shared;
 
 namespace Domain.Entities;
 
-public class Booking
+public class Booking : Entity<Guid>
 {
     private readonly List<Flight> _flights = [];
     private readonly List<Passenger> _passengers = [];
 
-    public Guid Id { get; set; }
     public string ClientId { get; set; }
     public DateTime CreatedAt { get; set; }
     public BookingStatus Status { get; set; }
