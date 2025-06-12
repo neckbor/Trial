@@ -1,4 +1,5 @@
 ﻿using Domain.Entities.Dictionaries;
+using Domain.Errors;
 using Domain.Primitives;
 using Domain.Shared;
 
@@ -44,6 +45,11 @@ public class SearchRequest : Entity<Guid>
         int passengerCount)
     {
         var now  = DateTime.UtcNow;
+
+        if (departureDate <= DateOnly.FromDateTime(now))
+        {
+            return Result.Failure<SearchRequest>(DomainErrors.SearchRequest.InvalidDepartureDate);
+        }
 
         return new SearchRequest(Guid.NewGuid(), SearchStatus.Pending, clientId, from, to, departureDate, passengerCount, now);
     }

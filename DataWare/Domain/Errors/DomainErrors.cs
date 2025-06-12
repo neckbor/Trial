@@ -22,7 +22,7 @@ public static class DomainErrors
     {
         public static readonly Error InvalidSegmentDates = Error.Validation(
             "FlightSegment.InvalidSegmentDates",
-            "Некорректные даты отправления/прибытия");
+            "Некорректные даты отправления/прибытия.");
     }
 
     public static class SearchStatus
@@ -30,5 +30,12 @@ public static class DomainErrors
         public static readonly Error NotFound = Error.NotFound(
             "SearchStatus.NotFound",
             "Не найден статус поиска.");
+    }
+
+    public static class SearchRequest
+    {
+        public static readonly Error InvalidDepartureDate = Error.Validation(
+            "SearchRequest.InvalidDepartureDate",
+            "Некорректная дата отправления.");
     }
 }
