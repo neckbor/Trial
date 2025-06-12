@@ -1,6 +1,6 @@
 ﻿namespace Domain.Primitives;
 
-internal interface IUnitOfWork
+public interface IUnitOfWork
 {
     Task SaveChangesAsync();
 }
