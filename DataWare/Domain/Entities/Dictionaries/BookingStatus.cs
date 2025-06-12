@@ -1,6 +1,5 @@
 ﻿using Domain.Errors;
 using Domain.Shared;
-using System.Reflection.Metadata.Ecma335;
 
 namespace Domain.Entities.Dictionaries;
 

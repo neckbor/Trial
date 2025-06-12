@@ -1,4 +1,5 @@
-﻿using Domain.Models;
+﻿using Domain.Entities.Dictionaries;
+using Domain.Models;
 
 namespace Domain.Entities;
 
