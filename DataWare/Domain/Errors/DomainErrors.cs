@@ -24,4 +24,11 @@ public static class DomainErrors
             "FlightSegment.InvalidSegmentDates",
             "Некорректные даты отправления/прибытия");
     }
+
+    public static class SearchStatus
+    {
+        public static readonly Error NotFound = Error.NotFound(
+            "SearchStatus.NotFound",
+            "Не найден статус поиска.");
+    }
 }
