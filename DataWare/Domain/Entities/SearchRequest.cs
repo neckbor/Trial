@@ -44,6 +44,16 @@ public class SearchRequest : Entity<Guid>
         DateOnly departureDate,
         int passengerCount)
     {
+        if (from == to)
+        {
+            return Result.Failure<SearchRequest>(DomainErrors.SearchRequest.SameAirports);
+        }
+
+        if (passengerCount <= 0)
+        {
+            return Result.Failure<SearchRequest>(DomainErrors.SearchRequest.InvalidPassengerCount);
+        }
+
         var now  = DateTime.UtcNow;
 
         if (departureDate <= DateOnly.FromDateTime(now))

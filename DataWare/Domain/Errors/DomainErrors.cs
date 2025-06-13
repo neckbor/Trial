@@ -37,5 +37,13 @@ public static class DomainErrors
         public static readonly Error InvalidDepartureDate = Error.Validation(
             "SearchRequest.InvalidDepartureDate",
             "Некорректная дата отправления.");
+
+        public static readonly Error SameAirports = Error.Validation(
+            "SearchRequest.SameAirports",
+            "Одинаковые аэропорты вылета и прилёта.");
+
+        public static readonly Error InvalidPassengerCount = Error.Validation(
+            "SearchRequest.InvalidPassengerCount",
+            "Некорректное значение количества пассажиров.");
     }
 }
