@@ -2,7 +2,7 @@
 
 namespace Application.Dictionaries.Airports;
 
-public static class Errors
+public static class AirportErrors
 {
     public static readonly Error NotFound = Error.NotFound(
         "Airport.NotFound",

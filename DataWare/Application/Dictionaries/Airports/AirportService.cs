@@ -18,7 +18,7 @@ internal class AirportService : IAirportService
         var airport = await _airportRepository.FirstOrDefaultAsync<Airport>(a => a.IATACode.Equals(IATACode.ToUpperInvariant()));
         if (airport is null)
         {
-            return Result.Failure<Airport>(Errors.NotFound);
+            return Result.Failure<Airport>(AirportErrors.NotFound);
         }
 
         return airport;
