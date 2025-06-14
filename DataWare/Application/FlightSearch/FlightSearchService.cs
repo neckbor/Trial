@@ -110,12 +110,12 @@ internal class FlightSearchService : IFlightSearchService
         return Result.Success();
     }
 
-    public async Task<SearchResult> GetSearchResultAsync(SearchResultsQuery query)
+    public async Task<Result<SearchResult>> GetSearchResultAsync(SearchResultsQuery query)
     {
         var request = await _searchRequestRepository.GetByKeyAsync<SearchRequest>(query.SearchRequestId);
         if (request is null)
         {
-            return SearchResult.Fail(FlightSearchErrors.NotFound);
+            return Result.Failure<SearchResult>(FlightSearchErrors.NotFound);
         }
 
         var getSearchResultResult = await _flightAggregator.GetSearchResultAsync(request.SearchResultKey);
@@ -128,7 +128,7 @@ internal class FlightSearchService : IFlightSearchService
                 getSearchResultResult.Error.Code,
                 getSearchResultResult.Error.Message);
 
-            return SearchResult.Fail(FlightSearchErrors.GetResultFailed);
+            return Result.Failure<SearchResult>(FlightSearchErrors.GetResultFailed);
         }
 
         var searchResult = getSearchResultResult.Value;
