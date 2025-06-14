@@ -16,7 +16,8 @@ public class GetSearchResultTests
     public GetSearchResultTests()
     {
         _cacheMock = new Mock<ISearchResultCache>();
-        _flightAggregator = new FlightAggregator(_cacheMock.Object);
+
+        _flightAggregator = new FlightAggregator(_cacheMock.Object, new List<ITicketingProvider>());
     }
 
     [Fact]
