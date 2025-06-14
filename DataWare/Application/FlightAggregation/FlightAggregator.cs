@@ -7,11 +7,11 @@ using Domain.Shared;
 
 namespace Application.FlightAggregation;
 
-internal class FlightAggreagator : IFlightAggregator
+internal class FlightAggregator : IFlightAggregator
 {
     private readonly ISearchResultCache _searchResultCache;
 
-    public FlightAggreagator(ISearchResultCache searchResultCache)
+    public FlightAggregator(ISearchResultCache searchResultCache)
     {
         _searchResultCache = searchResultCache;
     }
