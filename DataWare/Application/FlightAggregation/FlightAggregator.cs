@@ -69,6 +69,29 @@ internal class FlightAggregator : IFlightAggregator
     {
         var searchKey = request.SearchResultKey;
 
+        var getFlightsTtlResult = await _searchResultCache.GetFlightsTtlAsync(searchKey);
+        if (getFlightsTtlResult.IsSuccess)
+        {
+            var flightsTtl = getFlightsTtlResult.Value;
+            if (flightsTtl > TimeSpan.FromMinutes(1))
+            {
+                _logger.LogInformation("Время жизни результатов поиска {SearchKey} позволяет не запускать поиск у провайдеров", searchKey);
+                return Result.Success();
+            }
+        }
+
+        var clearResult = await _searchResultCache.CLearAsync(searchKey);
+        if (clearResult.IsFailure)
+        {
+            _logger.LogWarning(
+                "При очистке кеша по ключу {SearchKey} произошла ошибка {ErrorCode}: {ErrorMessage}",
+                searchKey,
+                clearResult.Error.Code,
+                clearResult.Error.Message);
+
+            return Result.Failure(clearResult.Error);
+        }
+
         // seed search key with empty flights
         await _searchResultCache.AddFlightsAsync(searchKey, new List<BaseFlight>());
 

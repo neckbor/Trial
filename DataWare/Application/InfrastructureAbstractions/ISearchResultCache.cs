@@ -10,4 +10,6 @@ public interface ISearchResultCache
     Task<Result<List<BaseFlight>>> GetFlightsAsync(string searchKey);
     Task SetProviderSearchStatusAsync(string searchKey, TicketingProvider provider, SearchStatus status);
     Task<Result<Dictionary<TicketingProvider, SearchStatus>>> GetProviderSearchStatusAsync(string searchKey);
+    Task<Result<TimeSpan>> GetFlightsTtlAsync(string searchKey);
+    Task<Result> CLearAsync(string searchKey);
 }
