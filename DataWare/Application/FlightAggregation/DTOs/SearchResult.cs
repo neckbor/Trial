@@ -10,6 +10,8 @@ public class SearchResult
     public SearchStatus Status { get; private set; }
     public Error? Error { get; private set; }
 
+    public bool Failed => Status == SearchStatus.Failed;
+
     private SearchResult(List<BaseFlight>? flights, SearchStatus status, Error? error)
     {
         Flights = flights ?? [];
