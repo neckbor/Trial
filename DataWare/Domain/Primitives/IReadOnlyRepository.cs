@@ -9,4 +9,6 @@ public interface IReadOnlyRepository<TEntity, in TKey>
     Task<TResult> FirstOrDefaultAsync<TResult>(
         Expression<Func<TEntity, bool>> condition,
         params Expression<Func<TEntity, object>>[] includedPaths);
+
+    Task<List<TResult>> SearchAsync<TResult>(Expression<Func<TEntity, bool>> condition);
 }
