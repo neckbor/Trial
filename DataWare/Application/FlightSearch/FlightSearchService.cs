@@ -34,14 +34,14 @@ internal class FlightSearchService : IFlightSearchService
         _logger = logger;
     }
 
-    public async Task<Result<string>> CreateSearchRequestAsync(StartSearchCommand command)
+    public async Task<Result<Guid>> CreateSearchRequestAsync(StartSearchCommand command)
     {
         var getFromAirportResult = await _airportService.GetByIATACodeAsync(command.FromAirportIATACode);
         if (getFromAirportResult.IsFailure) 
         {
             _logger.LogWarning("Ошибка при получении аэропорта отправления {ErrorCode}: {ErrorMessage}", getFromAirportResult.Error.Code, getFromAirportResult.Error.Message);
 
-            return Result.Failure<string>(getFromAirportResult.Error);
+            return Result.Failure<Guid>(getFromAirportResult.Error);
         }
         var fromAirport = getFromAirportResult.Value;
 
@@ -50,7 +50,7 @@ internal class FlightSearchService : IFlightSearchService
         {
             _logger.LogWarning("Ошибка при получении аэропорта прибытия {ErrorCode}: {ErrorMessage}", getToAirportResult.Error.Code, getToAirportResult.Error.Message);
 
-            return Result.Failure<string>(getToAirportResult.Error);
+            return Result.Failure<Guid>(getToAirportResult.Error);
         }
         var toAirport = getToAirportResult.Value;
 
@@ -59,7 +59,7 @@ internal class FlightSearchService : IFlightSearchService
         {
             _logger.LogWarning("Ошибка при создании запроса поиска {ErrorCode}: {ErrorMessage}", createSearchRequestResult.Error.Code, createSearchRequestResult.Error.Message);
 
-            return Result.Failure<string>(createSearchRequestResult.Error);
+            return Result.Failure<Guid>(createSearchRequestResult.Error);
         }
         var searchRequest = createSearchRequestResult.Value;
 
@@ -70,13 +70,13 @@ internal class FlightSearchService : IFlightSearchService
 
             _logger.LogInformation("Создан запрос н поиск {SearchRequestId}", searchRequest.Id);
 
-            return searchRequest.SearchResultKey;
+            return searchRequest.Id;
         }
         catch (Exception ex) 
         {
             _logger.LogError(ex, "Исключение при сохранении нового запроса поиска по команде {@Command}", command);
 
-            return Result.Failure<string>(ApplicationErrors.General.Unexpected);
+            return Result.Failure<Guid>(ApplicationErrors.General.Unexpected);
         }
     }
     

@@ -57,7 +57,7 @@ public class CreateSearchRequestTests
 
         // Assert
         result.IsSuccess.Should().BeTrue();
-        result.Value.Should().NotBe(string.Empty);
+        result.Value.Should().NotBe(Guid.Empty);
     }
 
     [Fact]
