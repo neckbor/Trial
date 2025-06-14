@@ -7,7 +7,7 @@ namespace Domain.Entities;
 
 public class SearchRequest : Entity<Guid>
 {
-    public SearchStatus Status { get; private set; }
+    public bool AggregationStarted { get; private set; }
     public string ClientId { get; private set; }
     public Airport From { get; private set; }
     public Airport To { get; private set; }
@@ -21,7 +21,7 @@ public class SearchRequest : Entity<Guid>
 
     private SearchRequest(
         Guid id,
-        SearchStatus status,
+        bool aggregationStarted,
         string clientId,
         Airport from,
         Airport to,
@@ -31,7 +31,7 @@ public class SearchRequest : Entity<Guid>
         string searchKey)
     {
         Id = id; 
-        Status = status;
+        AggregationStarted = aggregationStarted;
         ClientId = clientId;
         From = from;
         To = to;
@@ -67,8 +67,10 @@ public class SearchRequest : Entity<Guid>
 
         string seatchKey = BuildSearchKey(from, to, departureDate);
 
-        return new SearchRequest(Guid.NewGuid(), SearchStatus.Created, clientId, from, to, departureDate, passengerCount, now, seatchKey);
+        return new SearchRequest(Guid.NewGuid(), false, clientId, from, to, departureDate, passengerCount, now, seatchKey);
     }
 
     private static string BuildSearchKey(Airport from, Airport to, DateOnly departureDate) => $"{from.IATACode}:{to.IATACode}:{departureDate:DDMMYYYY}";
+
+    public void MarkAggregationStarted() => AggregationStarted = true;
 }
