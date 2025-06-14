@@ -1,6 +1,7 @@
 ﻿using Application.Dictionaries.Airports;
 using Application.Errors;
 using Application.FlightAggregation;
+using Application.FlightAggregation.DTOs;
 using Application.FlightSearch.DTOs;
 using Domain.Entities;
 using Domain.Primitives;
@@ -79,7 +80,7 @@ internal class FlightSearchService : IFlightSearchService
             return Result.Failure<Guid>(ApplicationErrors.General.Unexpected);
         }
     }
-    
+
     public async Task<Result> LaunchFlightSearchAsync()
     {
         var unprocessed = await _searchRequestRepository.SearchAsync<SearchRequest>(r => !r.AggregationStarted);
@@ -107,5 +108,41 @@ internal class FlightSearchService : IFlightSearchService
         }
 
         return Result.Success();
+    }
+
+    public async Task<SearchResult> GetSearchResultAsync(SearchResultsQuery query)
+    {
+        var request = await _searchRequestRepository.GetByKeyAsync<SearchRequest>(query.SearchRequestId);
+        if (request is null)
+        {
+            return SearchResult.Fail(FlightSearchErrors.NotFound);
+        }
+
+        var getSearchResultResult = await _flightAggregator.GetSearchResultAsync(request.SearchResultKey);
+        if (getSearchResultResult.IsFailure) 
+        {
+            _logger.LogWarning(
+                "При получении результатов поиска {SearchRequestId} по ключу {SearchKey} произошла ошибка {ErrorCode}: {ErrorMessage}",
+                request.Id,
+                request.SearchResultKey,
+                getSearchResultResult.Error.Code,
+                getSearchResultResult.Error.Message);
+
+            return SearchResult.Fail(FlightSearchErrors.GetResultFailed);
+        }
+
+        var searchResult = getSearchResultResult.Value;
+        if (searchResult.Failed)
+        {
+            _logger.LogInformation(
+                "Результат поиска перелётов по ключу {SearchKey} от запроса {SearchRequestId} со статусом {SearchStatus} и ошибкой {ErrorCode}: {ErrorMessage}",
+                request.SearchResultKey,
+                request.Id,
+                searchResult.Status.Code,
+                searchResult.Error?.Code,
+                searchResult.Error?.Message);
+        }
+        
+        return searchResult;
     }
 }
