@@ -7,7 +7,7 @@ public class TicketingProvider : Entity<int>
     public string Code { get; private set; }
     public string Name { get; private set; }
 
-    private TicketingProvider(int id, string code, string name)
+    internal TicketingProvider(int id, string code, string name) 
     {
         Id = id;
         Code = code;
