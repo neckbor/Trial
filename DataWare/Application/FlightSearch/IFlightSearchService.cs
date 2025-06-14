@@ -6,4 +6,5 @@ namespace Application.FlightSearch;
 public interface IFlightSearchService
 {
     Task<Result<string>> CreateSearchRequestAsync(StartSearchCommand command);
+    Task<Result> LaunchFlightSearchAsync();
 }

@@ -79,5 +79,33 @@ internal class FlightSearchService : IFlightSearchService
             return Result.Failure<string>(ApplicationErrors.General.Unexpected);
         }
     }
+    
+    public async Task<Result> LaunchFlightSearchAsync()
+    {
+        var unprocessed = await _searchRequestRepository.SearchAsync<SearchRequest>(r => !r.AggregationStarted);
 
+        var searchGroups = unprocessed.GroupBy(s => s.SearchResultKey);
+        foreach (var group in searchGroups)
+        {
+            string searchKey = group.Key;
+
+            await _flightAggregator.AggregateAsync(group.First());
+
+            foreach (var request in group)
+            {
+                request.MarkAggregationStarted();
+            }
+        }
+
+        try
+        {
+            await _unitOfWork.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Исключение при сохранении запросов на поиск");
+        }
+
+        return Result.Success();
+    }
 }
