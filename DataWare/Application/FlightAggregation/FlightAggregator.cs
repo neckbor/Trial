@@ -10,15 +10,12 @@ namespace Application.FlightAggregation;
 internal class FlightAggregator : IFlightAggregator
 {
     private readonly ISearchResultCache _searchResultCache;
+    private readonly IEnumerable<ITicketingProvider> _ticketingProviders;
 
-    public FlightAggregator(ISearchResultCache searchResultCache)
+    public FlightAggregator(ISearchResultCache searchResultCache, IEnumerable<ITicketingProvider> ticketingProviders)
     {
         _searchResultCache = searchResultCache;
-    }
-
-    public Task<Result> AggregateAsync(SearchRequest request)
-    {
-        throw new NotImplementedException();
+        _ticketingProviders = ticketingProviders;
     }
 
     public async Task<Result<SearchResult>> GetSearchResultAsync(string searchKey)
@@ -50,5 +47,46 @@ internal class FlightAggregator : IFlightAggregator
         }
 
         return SearchResult.Completed(flights);
+    }
+
+    public async Task<Result> AggregateAsync(SearchRequest request)
+    {
+        var searchKey = request.SearchResultKey;
+
+        // seed search key with empty flights
+        await _searchResultCache.AddFlightsAsync(searchKey, new List<BaseFlight>());
+
+        foreach (var provider in _ticketingProviders) 
+        {
+            await _searchResultCache.SetProviderSearchStatusAsync(searchKey, provider.Provider, SearchStatus.Pending);
+
+            _ = Task.Run(() => RunProviderAsync(provider, request));
+        }
+
+        return Result.Success();
+    }
+
+    private async Task RunProviderAsync(ITicketingProvider provider, SearchRequest request)
+    {
+        var searchKey = request.SearchResultKey;
+
+        try
+        {
+            var searchResult = await provider.SearchAsync(request);
+            if (searchResult.IsFailure)
+            {
+                await _searchResultCache.SetProviderSearchStatusAsync(searchKey, provider.Provider, SearchStatus.Failed);
+                return;
+            }
+
+            var flights = searchResult.Value;
+
+            await _searchResultCache.AddFlightsAsync(searchKey, flights);
+            await _searchResultCache.SetProviderSearchStatusAsync(searchKey, provider.Provider, SearchStatus.Completed);
+        }
+        catch (Exception ex) 
+        {
+            await _searchResultCache.SetProviderSearchStatusAsync(searchKey, provider.Provider, SearchStatus.Failed);
+        }
     }
 }
