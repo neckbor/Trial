@@ -1,10 +1,11 @@
-﻿using Domain.Entities;
-using Domain.Models;
+﻿using Application.FlightAggregation.DTOs;
+using Domain.Entities;
 using Domain.Shared;
 
 namespace Application.FlightAggregation;
 
 public interface IFlightAggregator
 {
-    Task<Result<List<BaseFlight>>> AggregateAsync(SearchRequest request, CancellationToken cancellationToken);
+    Task<Result> AggregateAsync(SearchRequest request);
+    Task<Result<SearchResult>> GetSearchResultAsync(string searchKey);
 }
