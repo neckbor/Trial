@@ -22,7 +22,7 @@ internal class FlightSearchService : IFlightSearchService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result<string>> StartSearch(StartSearchCommand command)
+    public async Task<Result<string>> CreateSearchRequestAsync(StartSearchCommand command)
     {
         var getFromAirportResult = await _airportService.GetByIATACodeAsync(command.FromAirportIATACode);
         if (getFromAirportResult.IsFailure) 
@@ -61,4 +61,5 @@ internal class FlightSearchService : IFlightSearchService
             return Result.Failure<string>(ApplicationErrors.General.Unexpected);
         }
     }
+
 }

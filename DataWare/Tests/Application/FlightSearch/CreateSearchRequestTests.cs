@@ -12,7 +12,7 @@ using Moq;
 
 namespace Tests.Application.FlightSearch;
 
-public class StartSearchTests
+public class CreateSearchRequestTests
 {
     private readonly Mock<IAirportService> _airportServiceMock = new();
     private readonly Mock<ISearchRequestRepository> _repositoryMock = new();
@@ -20,7 +20,7 @@ public class StartSearchTests
 
     private readonly FlightSearchService _service;
 
-    public StartSearchTests()
+    public CreateSearchRequestTests()
     {
         _service = new FlightSearchService(
             _repositoryMock.Object,
@@ -46,7 +46,7 @@ public class StartSearchTests
         _unitOfWorkMock.Setup(x => x.SaveChangesAsync()).Returns(Task.CompletedTask);
 
         // Act
-        var result = await _service.StartSearch(command);
+        var result = await _service.CreateSearchRequestAsync(command);
 
         // Assert
         result.IsSuccess.Should().BeTrue();
@@ -65,7 +65,7 @@ public class StartSearchTests
             .ReturnsAsync(Result.Failure<Airport>(expectedError));
 
         // Act
-        var result = await _service.StartSearch(command);
+        var result = await _service.CreateSearchRequestAsync(command);
 
         // Assert
         result.IsFailure.Should().BeTrue();
@@ -91,7 +91,7 @@ public class StartSearchTests
         var expectedError = DomainErrors.SearchRequest.InvalidDepartureDate;
 
         // Act
-        var result = await _service.StartSearch(command);
+        var result = await _service.CreateSearchRequestAsync(command);
 
         // Assert
         result.IsFailure.Should().BeTrue();
