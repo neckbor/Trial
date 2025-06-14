@@ -4,20 +4,24 @@ using Domain.Entities.Dictionaries;
 using Domain.Models;
 using Domain.Shared;
 using FluentAssertions;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 
 namespace Tests.Application.FlightAggregation;
 
 public class GetSearchResultTests
 {
-    private readonly Mock<ISearchResultCache> _cacheMock;
+    private readonly ILogger<FlightAggregator> _logger = NullLogger<FlightAggregator>.Instance;
+    private readonly Mock<ISearchResultCache> _cacheMock = new();
     private readonly FlightAggregator _flightAggregator;
 
     public GetSearchResultTests()
     {
-        _cacheMock = new Mock<ISearchResultCache>();
-
-        _flightAggregator = new FlightAggregator(_cacheMock.Object, new List<ITicketingProvider>());
+        _flightAggregator = new FlightAggregator(
+            _logger,
+            _cacheMock.Object, 
+            new List<ITicketingProvider>());
     }
 
     [Fact]

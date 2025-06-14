@@ -1,4 +1,5 @@
 ﻿using Application.Dictionaries.Airports;
+using Application.FlightAggregation;
 using Application.FlightSearch;
 using Application.FlightSearch.DTOs;
 using Domain.Entities;
@@ -8,24 +9,30 @@ using Domain.Primitives;
 using Domain.Repositories;
 using Domain.Shared;
 using FluentAssertions;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 
 namespace Tests.Application.FlightSearch;
 
 public class CreateSearchRequestTests
 {
+    private readonly ILogger<FlightSearchService> _logger = NullLogger<FlightSearchService>.Instance;
     private readonly Mock<IAirportService> _airportServiceMock = new();
     private readonly Mock<ISearchRequestRepository> _repositoryMock = new();
     private readonly Mock<IUnitOfWork> _unitOfWorkMock = new();
+    private readonly Mock<IFlightAggregator> _flightAggregatorMock = new();
 
     private readonly FlightSearchService _service;
 
     public CreateSearchRequestTests()
     {
         _service = new FlightSearchService(
+            _logger,
             _repositoryMock.Object,
             _unitOfWorkMock.Object,
-            _airportServiceMock.Object);
+            _airportServiceMock.Object,
+            _flightAggregatorMock.Object);
     }
 
     [Fact]

@@ -4,18 +4,24 @@ using Domain.Entities;
 using Domain.Entities.Dictionaries;
 using Domain.Models;
 using Domain.Shared;
+using Microsoft.Extensions.Logging;
 
 namespace Application.FlightAggregation;
 
 internal class FlightAggregator : IFlightAggregator
 {
+    private readonly ILogger<FlightAggregator> _logger;
     private readonly ISearchResultCache _searchResultCache;
     private readonly IEnumerable<ITicketingProvider> _ticketingProviders;
 
-    public FlightAggregator(ISearchResultCache searchResultCache, IEnumerable<ITicketingProvider> ticketingProviders)
+    public FlightAggregator(
+        ILogger<FlightAggregator> logger, 
+        ISearchResultCache searchResultCache, 
+        IEnumerable<ITicketingProvider> ticketingProviders)
     {
         _searchResultCache = searchResultCache;
         _ticketingProviders = ticketingProviders;
+        _logger = logger;
     }
 
     public async Task<Result<SearchResult>> GetSearchResultAsync(string searchKey)
@@ -23,6 +29,11 @@ internal class FlightAggregator : IFlightAggregator
         var getCachedFlightsResult = await _searchResultCache.GetFlightsAsync(searchKey);
         if (getCachedFlightsResult.IsFailure)
         {
+            _logger.LogWarning("Ошибка при получении результатов поиска по ключу {SearchKey} {ErrorCode}: {ErrorMessage}",
+                searchKey,
+                getCachedFlightsResult.Error.Code,
+                getCachedFlightsResult.Error.Message);
+
             return SearchResult.Fail(getCachedFlightsResult.Error);
         }
 
@@ -31,6 +42,11 @@ internal class FlightAggregator : IFlightAggregator
         var getCachedProviderSearchStatusesResult = await _searchResultCache.GetProviderSearchStatusAsync(searchKey);
         if (getCachedProviderSearchStatusesResult.IsFailure)
         {
+            _logger.LogWarning("Ошибка при получении статусов провайдера поиска по ключу {SearchKey} {ErrorCode}: {ErrorMessage}",
+                searchKey,
+                getCachedProviderSearchStatusesResult.Error.Code,
+                getCachedProviderSearchStatusesResult.Error.Message);
+
             return SearchResult.Fail(getCachedProviderSearchStatusesResult.Error);
         }
 
@@ -75,6 +91,11 @@ internal class FlightAggregator : IFlightAggregator
             var searchResult = await provider.SearchAsync(request);
             if (searchResult.IsFailure)
             {
+                _logger.LogWarning("Ошибка при поиске перелётов в провайдере {TicketingProvider} {ErrorCode}: {ErrorMessage}",
+                    provider.Provider.Code,
+                    searchResult.Error.Code,
+                    searchResult.Error.Message);
+
                 await _searchResultCache.SetProviderSearchStatusAsync(searchKey, provider.Provider, SearchStatus.Failed);
                 return;
             }
@@ -86,6 +107,10 @@ internal class FlightAggregator : IFlightAggregator
         }
         catch (Exception ex) 
         {
+            _logger.LogError(ex,
+                "Исключеине при поиске перелётов в провайдере {TicketingProvider}",
+                provider.Provider.Code);
+
             await _searchResultCache.SetProviderSearchStatusAsync(searchKey, provider.Provider, SearchStatus.Failed);
         }
     }
