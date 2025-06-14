@@ -22,13 +22,13 @@ internal class FlightSearchService : IFlightSearchService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result<Guid>> StartSearch(StartSearchCommand command)
+    public async Task<Result<string>> StartSearch(StartSearchCommand command)
     {
         var getFromAirportResult = await _airportService.GetByIATACodeAsync(command.FromAirportIATACode);
         if (getFromAirportResult.IsFailure) 
         {
             // log warning
-            return Result.Failure<Guid>(getFromAirportResult.Error);
+            return Result.Failure<string>(getFromAirportResult.Error);
         }
         var fromAirport = getFromAirportResult.Value;
 
@@ -36,7 +36,7 @@ internal class FlightSearchService : IFlightSearchService
         if (getToAirportResult.IsFailure) 
         {
             // log warning
-            return Result.Failure<Guid>(getToAirportResult.Error);
+            return Result.Failure<string>(getToAirportResult.Error);
         }
         var toAirport = getToAirportResult.Value;
 
@@ -44,7 +44,7 @@ internal class FlightSearchService : IFlightSearchService
         if (createSearchRequestResult.IsFailure) 
         {
             // log warning
-            return Result.Failure<Guid>(createSearchRequestResult.Error);
+            return Result.Failure<string>(createSearchRequestResult.Error);
         }
         var searchRequest = createSearchRequestResult.Value;
 
@@ -53,12 +53,12 @@ internal class FlightSearchService : IFlightSearchService
             await _searchRequestRepository.InsertAsync(searchRequest);
             await _unitOfWork.SaveChangesAsync();
 
-            return searchRequest.Id;
+            return searchRequest.SearchResultKey;
         }
         catch (Exception ex) 
         {
             // log error
-            return Result.Failure<Guid>(ApplicationErrors.General.Unexpected);
+            return Result.Failure<string>(ApplicationErrors.General.Unexpected);
         }
     }
 }

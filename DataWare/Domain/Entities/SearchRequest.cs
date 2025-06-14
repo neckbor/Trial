@@ -17,6 +17,8 @@ public class SearchRequest : Entity<Guid>
     public DateTime CreatedAtUtc { get; private set; }
     public DateTime? CompletedAtUtc { get; private set; }
 
+    public string SearchResultKey { get; private set; }
+
     private SearchRequest(
         Guid id,
         SearchStatus status,
@@ -25,7 +27,8 @@ public class SearchRequest : Entity<Guid>
         Airport to,
         DateOnly departureDate,
         int passengerCount,
-        DateTime createdAtUtc)
+        DateTime createdAtUtc,
+        string searchKey)
     {
         Id = id; 
         Status = status;
@@ -35,6 +38,7 @@ public class SearchRequest : Entity<Guid>
         DepartureDate = departureDate;
         PassengerCount = passengerCount;
         CreatedAtUtc = createdAtUtc;
+        SearchResultKey = searchKey;
     }
 
     public static Result<SearchRequest> Create(
@@ -61,6 +65,10 @@ public class SearchRequest : Entity<Guid>
             return Result.Failure<SearchRequest>(DomainErrors.SearchRequest.InvalidDepartureDate);
         }
 
-        return new SearchRequest(Guid.NewGuid(), SearchStatus.Created, clientId, from, to, departureDate, passengerCount, now);
+        string seatchKey = BuildSearchKey(from, to, departureDate);
+
+        return new SearchRequest(Guid.NewGuid(), SearchStatus.Created, clientId, from, to, departureDate, passengerCount, now, seatchKey);
     }
+
+    private static string BuildSearchKey(Airport from, Airport to, DateOnly departureDate) => $"{from.IATACode}:{to.IATACode}:{departureDate:DDMMYYYY}";
 }

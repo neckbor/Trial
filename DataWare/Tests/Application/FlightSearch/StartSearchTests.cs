@@ -50,7 +50,7 @@ public class StartSearchTests
 
         // Assert
         result.IsSuccess.Should().BeTrue();
-        result.Value.Should().NotBe(Guid.Empty);
+        result.Value.Should().NotBe(string.Empty);
     }
 
     [Fact]

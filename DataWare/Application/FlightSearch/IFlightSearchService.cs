@@ -5,5 +5,5 @@ namespace Application.FlightSearch;
 
 public interface IFlightSearchService
 {
-    Task<Result<Guid>> StartSearch(StartSearchCommand command);
+    Task<Result<string>> StartSearch(StartSearchCommand command);
 }
