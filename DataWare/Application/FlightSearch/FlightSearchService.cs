@@ -110,7 +110,7 @@ internal class FlightSearchService : IFlightSearchService
         return Result.Success();
     }
 
-    public async Task<Result<SearchResult>> GetSearchResultAsync(SearchResultsQuery query)
+    public async Task<Result<SearchResult>> GetSearchResultAsync(GetSearchResultsQuery query)
     {
         var request = await _searchRequestRepository.GetByKeyAsync<SearchRequest>(query.SearchRequestId);
         if (request is null)

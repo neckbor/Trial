@@ -8,5 +8,5 @@ public interface IFlightSearchService
 {
     Task<Result<Guid>> CreateSearchRequestAsync(StartSearchCommand command);
     Task<Result> LaunchFlightSearchAsync();
-    Task<Result<SearchResult>> GetSearchResultAsync(SearchResultsQuery query);
+    Task<Result<SearchResult>> GetSearchResultAsync(GetSearchResultsQuery query);
 }
