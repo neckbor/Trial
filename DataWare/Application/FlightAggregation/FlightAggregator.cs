@@ -137,4 +137,34 @@ internal class FlightAggregator : IFlightAggregator
             await _searchResultCache.SetProviderSearchStatusAsync(searchKey, provider.Provider, SearchStatus.Failed);
         }
     }
+
+    public async Task<Result<BaseFlight>> GetFlightByIdAsync(SearchRequest request, string flightId)
+    {
+        var getSearchResultsResult = await GetSearchResultAsync(request.SearchResultKey);
+        if (getSearchResultsResult.IsFailure)
+        {
+            _logger.LogWarning(
+                "При получении результатов поиска по ключу {SearchKey} произошла ошибка {ErrorCode}: {ErrorMessage}",
+                request.SearchResultKey,
+                getSearchResultsResult.Error.Code,
+                getSearchResultsResult.Error.Message);
+
+            return Result.Failure<BaseFlight>(getSearchResultsResult.Error);
+        }
+
+        var searchResults = getSearchResultsResult.Value;
+        var flight = searchResults.Flights.FirstOrDefault(f => f.FlightId.Equals(flightId));
+
+        if (flight is null)
+        {
+            _logger.LogWarning(
+                "Получены результаты поиска по ключу {SearchKey}, но перелёта {FlightId} не нашлось",
+                request.SearchResultKey,
+                flightId);
+
+            return Result.Failure<BaseFlight>(FlightAggregationErrors.FlightByIdNotFound);
+        }
+
+        return flight;
+    }
 }
