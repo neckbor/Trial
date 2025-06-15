@@ -11,7 +11,7 @@ public class BaseFlight
         {
             if (string.IsNullOrEmpty(FlightId))
             {
-                return $"{TicketingProvider.Code}{From.IATACode}{To.IATACode}{DepartureDate:ddMMYYYY}";
+                return $"{TicketingProvider.Code}:{string.Join(":", Segments.Select(s => s.FlightNumber))}";
             }
 
             return FlightId;
