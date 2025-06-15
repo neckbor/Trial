@@ -150,4 +150,15 @@ internal class FlightSearchService : IFlightSearchService
         
         return searchResult;
     }
+
+    public async Task<Result<SearchRequest>> GetSearchRequestByIdAsync(Guid searchRequestId)
+    {
+        var searchRequest = await _searchRequestRepository.GetByKeyAsync<SearchRequest>(searchRequestId);
+        if (searchRequest is null)
+        {
+            _logger.LogWarning("Запрос на поиск {SearchRequstId} не найден", searchRequestId);
+        }
+
+        return searchRequest;
+    }
 }
