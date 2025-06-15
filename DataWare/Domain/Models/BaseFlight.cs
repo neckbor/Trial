@@ -5,16 +5,16 @@ namespace Domain.Models;
 public class BaseFlight
 {
     public TicketingProvider TicketingProvider { get; set; }
-    public string ProviderFlightId
+    public string FlightId
     {
         get
         {
-            if (string.IsNullOrEmpty(ProviderFlightId))
+            if (string.IsNullOrEmpty(FlightId))
             {
-                return $"{From.IATACode}{To.IATACode}{DepartureDate:ddMMYYYY}";
+                return $"{TicketingProvider.Code}{From.IATACode}{To.IATACode}{DepartureDate:ddMMYYYY}";
             }
 
-            return ProviderFlightId;
+            return FlightId;
         }
 
         set { }

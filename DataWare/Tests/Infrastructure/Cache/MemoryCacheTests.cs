@@ -33,7 +33,7 @@ public class MemoryCacheTests
             new()
             {
                 TicketingProvider = TicketingProvider.AirTickets,
-                ProviderFlightId = providerFlightId,
+                FlightId = providerFlightId,
                 Fare = new FareDetails { BaseFare = 100, Taxes = 20 },
                 Segments = new List<BaseSegment>()
                 {
@@ -58,7 +58,7 @@ public class MemoryCacheTests
         // Assert
         result.IsSuccess.Should().BeTrue();
         result.Value.Should().NotBeNull();
-        result.Value[0].ProviderFlightId.Should().Be(providerFlightId);
+        result.Value[0].FlightId.Should().Be(providerFlightId);
     }
 
     [Fact]
@@ -72,7 +72,7 @@ public class MemoryCacheTests
             new()
             {
                 TicketingProvider = TicketingProvider.AirTickets,
-                ProviderFlightId = Guid.NewGuid().ToString(),
+                FlightId = Guid.NewGuid().ToString(),
                 Fare = new FareDetails { BaseFare = 100, Taxes = 20 },
                 Segments = new List<BaseSegment>()
                 {
@@ -95,7 +95,7 @@ public class MemoryCacheTests
             new()
             {
                 TicketingProvider = TicketingProvider.AirTickets,
-                ProviderFlightId = Guid.NewGuid().ToString(),
+                FlightId = Guid.NewGuid().ToString(),
                 Fare = new FareDetails { BaseFare = 200, Taxes = 0 },
                 Segments = new List<BaseSegment>()
                 {
