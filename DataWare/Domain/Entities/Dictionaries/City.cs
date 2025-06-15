@@ -13,6 +13,7 @@ public class City : Entity<long>
     public string IATACode { get; private set; }
     public string Name { get; private set; }
 
+    public int CountryId { get; private set; }
     public virtual Country Country { get; private set; }
 
     private City(long id, string iATACode, string name, Country country)
@@ -21,4 +22,6 @@ public class City : Entity<long>
         Name = name;
         Country = country;
     }
+
+    public static IEnumerable<City> GetAll() => [London, Paris, Tbilisi, LosAngeles, Dubai];
 }
