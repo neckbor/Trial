@@ -12,8 +12,8 @@ public class SearchRequestTests
     {
         // Arrange
         var clientId = "";
-        var from = Airport.Create(1, "JFK", "JFK");
-        var to = Airport.Create(2, "LAX", "LAX");
+        var from = Airport.DBX;
+        var to = Airport.LAX;
         var departureDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(10));
         var passengerCount = 1;
 
@@ -30,8 +30,8 @@ public class SearchRequestTests
     {
         // Arrange
         var clientId = "";
-        var from = Airport.Create(1, "JFK", "JFK");
-        var to = Airport.Create(2, "LAX", "LAX");
+        var from = Airport.DBX;
+        var to = Airport.LAX;
         var departureDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(-1));
         var passengerCount = 1;
 
@@ -48,7 +48,7 @@ public class SearchRequestTests
     {
         // Arrange
         var clientId = "";
-        var from = Airport.Create(1, "JFK", "JFK");
+        var from = Airport.LAX;
         var to = from;
         var departureDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(10));
         var passengerCount = 1;
@@ -66,8 +66,8 @@ public class SearchRequestTests
     {
         // Arrange
         var clientId = "";
-        var from = Airport.Create(1, "JFK", "JFK");
-        var to = Airport.Create(2, "LAX", "LAX"); ;
+        var from = Airport.DBX;
+        var to = Airport.LAX; ;
         var departureDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(10));
         var passengerCount = 0;
 
