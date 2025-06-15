@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DataAccess;
 
-internal static class ServiceLocator
+public static class ServiceLocator
 {
     public static void RegisterDataAccessServices(IServiceCollection services, IConfiguration configuration)
     {
