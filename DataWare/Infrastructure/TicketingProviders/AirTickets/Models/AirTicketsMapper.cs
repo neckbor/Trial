@@ -53,6 +53,7 @@ internal class AirTicketsMapper
 
             segments.Add(new BaseSegment
             {
+                FlightNumber = s.Number,
                 Airline = airline,
                 From = fromAirport,
                 To = toAirport,
@@ -64,6 +65,7 @@ internal class AirTicketsMapper
 
         var baseFlight = new BaseFlight
         {
+            FlightId = source.Id,
             TicketingProvider = _provider,
             Fare = new FareDetails
             {

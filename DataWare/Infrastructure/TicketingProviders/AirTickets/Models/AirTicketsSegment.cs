@@ -2,6 +2,7 @@
 
 internal class AirTicketsSegment
 {
+    public string Number { get; set; }
     public string AirlineCode { get; set; }
     public string From { get; set; }
     public string To { get; set; }

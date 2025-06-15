@@ -2,6 +2,7 @@
 
 internal class AirTicketsFlight
 {
+    public string Id { get; set; }
     public string From { get; set; }
     public string To { get; set; }
     public DateTime Departure { get; set; }
