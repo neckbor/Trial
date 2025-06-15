@@ -10,10 +10,17 @@ public class Flight : Entity<Guid>
     private readonly List<FlightSegment> _flightSegments = [];
 
     public Booking Booking { get; private set; }
+
+    public long FromAirportId { get; private set; }
     public Airport From { get; private set; }
+
+    public long ToAirportId { get; private set; }
     public Airport To { get; private set; }
+
     public DateTime DepartureDate { get; private set; }
     public DateTime ArrivalDate { get; private set; }
+
+    public int TicketingProviderId { get; private set; }
     public TicketingProvider TicketingProvider { get; private set; }
     public decimal TotalPrice { get; private set; }
 
