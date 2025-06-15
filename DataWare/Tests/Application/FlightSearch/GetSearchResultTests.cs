@@ -40,7 +40,7 @@ public class GetSearchResultTests
     public async Task Should_ReturnError_WhenSearchRequest_NotFound()
     {
         // Arrange
-        var query = new GetSearchResultsQuery(Guid.Empty);
+        var query = new GetSearchResultsQuery(Guid.Empty, new SearchResultFilterOptions());
 
         _repositoryMock.Setup(r => r.GetByKeyAsync<SearchRequest>(query.SearchRequestId)).ReturnsAsync((SearchRequest)null);
 
@@ -57,7 +57,7 @@ public class GetSearchResultTests
     {
         // Arrange
         var sampleSearchRequest = SearchRequest.Create("", Airport.Create(1, "JFK", "JFK"), Airport.Create(2, "LAX", "LAX"), DateOnly.FromDateTime(DateTime.UtcNow.AddDays(10)), 1).Value;
-        var query = new GetSearchResultsQuery(sampleSearchRequest.Id);
+        var query = new GetSearchResultsQuery(sampleSearchRequest.Id, new SearchResultFilterOptions());
 
         _repositoryMock.Setup(r => r.GetByKeyAsync<SearchRequest>(query.SearchRequestId)).ReturnsAsync(sampleSearchRequest);
         _flightAggregatorMock.Setup(a => a.GetSearchResultAsync(sampleSearchRequest.SearchResultKey)).ReturnsAsync(Result.Failure<SearchResult>(Error.NullValue));
@@ -75,7 +75,7 @@ public class GetSearchResultTests
     {
         // Arrange
         var sampleSearchRequest = SearchRequest.Create("", Airport.Create(1, "JFK", "JFK"), Airport.Create(2, "LAX", "LAX"), DateOnly.FromDateTime(DateTime.UtcNow.AddDays(10)), 1).Value;
-        var query = new GetSearchResultsQuery(sampleSearchRequest.Id);
+        var query = new GetSearchResultsQuery(sampleSearchRequest.Id, new SearchResultFilterOptions());
 
         _repositoryMock.Setup(r => r.GetByKeyAsync<SearchRequest>(query.SearchRequestId)).ReturnsAsync(sampleSearchRequest);
         _flightAggregatorMock.Setup(a => a.GetSearchResultAsync(sampleSearchRequest.SearchResultKey)).ReturnsAsync(SearchResult.Completed(new List<BaseFlight>()));

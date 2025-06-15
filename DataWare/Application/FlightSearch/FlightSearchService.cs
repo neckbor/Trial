@@ -142,6 +142,10 @@ internal class FlightSearchService : IFlightSearchService
                 searchResult.Error?.Code,
                 searchResult.Error?.Message);
         }
+        else
+        {
+            searchResult = searchResult.ApplyFiltersAndSorting(query.FilterOptions);
+        }
         
         return searchResult;
     }
