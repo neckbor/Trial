@@ -13,6 +13,7 @@ public class Airport : Entity<long>
     public string IATACode { get; private set; }
     public string Name { get; private set; }
 
+    public long CityId { get; private set; }
     public virtual City City { get; private set; }
 
     private Airport(long id, string IATACode, string name, City city)
@@ -22,4 +23,6 @@ public class Airport : Entity<long>
         Name = name;
         City = city;
     }
+
+    public static IEnumerable<Airport> GetAll() => [CDG, LAX, DBX, LHR, TBS];
 }
