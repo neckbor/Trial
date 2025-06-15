@@ -1,4 +1,5 @@
 ﻿using Application.Booking.DTOs;
+using Application.Dictionaries.Countries;
 using Application.Errors;
 using Application.FlightAggregation;
 using Application.FlightSearch;
@@ -17,6 +18,7 @@ internal class BookingService : IBookingService
     private readonly IFlightSearchService _flightSearchService;
     private readonly IFlightAggregator _flightAggregator;
     private readonly IEnumerable<ITicketingProvider> _ticketingProviders;
+    private readonly ICountryService _countryService; 
 
     private readonly IBookingRepository _bookingRepository;
     private readonly IUnitOfWork _unitOfWork;
@@ -25,6 +27,7 @@ internal class BookingService : IBookingService
         ILogger<BookingService> logger,
         IFlightSearchService flightSearchService,
         IFlightAggregator flightAggregator,
+        ICountryService countryService,
         IEnumerable<ITicketingProvider> ticketingProviders,
         IBookingRepository bookingRepository,
         IUnitOfWork unitOfWork)
@@ -32,6 +35,7 @@ internal class BookingService : IBookingService
         _logger = logger;
         _flightSearchService = flightSearchService;
         _flightAggregator = flightAggregator;
+        _countryService = countryService;
         _ticketingProviders = ticketingProviders;
         _bookingRepository = bookingRepository;
         _unitOfWork = unitOfWork;
@@ -51,6 +55,30 @@ internal class BookingService : IBookingService
         }
 
         var searchRequest = getSearchRequestResult.Value;
+
+        if (searchRequest.PassengerCount != command.Passengers.Count)
+        {
+            _logger.LogWarning(
+                "Количество пассажиров в запросе на поиск {SearchRequestId} ({ExpectedPassengerCount}) и переданное при создании бронирования ({ActualPassengerCount}) не совпадает",
+                searchRequest.Id,
+                searchRequest.PassengerCount,
+                command.Passengers.Count);
+
+            return Result.Failure<Guid>(BookingErrors.PassengerCountChanged);
+        }
+
+        var buildPassengersResult = await BuildPassengers(command.Passengers);
+        if (buildPassengersResult.IsFailure)
+        {
+            _logger.LogWarning(
+                "Ошибка при создании пассажиров {ErrorCode}: {ErrorMessage}",
+                buildPassengersResult.Error.Code,
+                buildPassengersResult.Error.Message);
+
+            return Result.Failure<Guid>(buildPassengersResult.Error);
+        }
+
+        var passengers = buildPassengersResult.Value;
 
         var getFlightResult = await _flightAggregator.GetFlightByIdAsync(searchRequest, command.FlightId);
         if (getFlightResult.IsFailure) 
@@ -93,7 +121,7 @@ internal class BookingService : IBookingService
             baseBooking.Provider,
             baseBooking.BookingId,
             flight,
-            new List<Passenger>(),
+            passengers,
             "");
 
         if (createBookingResult.IsFailure) 
@@ -128,5 +156,40 @@ internal class BookingService : IBookingService
 
             return Result.Failure<Guid>(ApplicationErrors.General.Unexpected);
         }        
+    }
+
+    private async Task<Result<List<Passenger>>> BuildPassengers(List<PassengerInfo> passengersDto)
+    {
+        var passengers = new List<Passenger>();
+        foreach(var p in passengersDto)
+        {
+            var getCountryResult = await _countryService.GetByCodeAsync(p.CountryCitizenshipCode);
+            if (getCountryResult.IsFailure)
+            {
+                _logger.LogWarning(
+                    "Ошибка при получении страны {ErrorCode}: {ErrorMessage}",
+                    getCountryResult.Error.Code,
+                    getCountryResult.Error.Message);
+
+                return Result.Failure<List<Passenger>>(getCountryResult.Error);
+            }
+
+            var country = getCountryResult.Value;
+
+            var createPassengerResult = Passenger.Create(p.FisrtName, p.LastName, p.MiddleName, p.DateOfBirth, p.Gender, p.PassportNumber, country);
+            if (createPassengerResult.IsFailure)
+            {
+                _logger.LogWarning(
+                    "Ошибка при создании пассажира {ErrorCode}: {ErrorMessage}",
+                    createPassengerResult.Error.Code,
+                    createPassengerResult.Error.Message);
+
+                return Result.Failure<List<Passenger>>(createPassengerResult.Error);
+            }
+
+            passengers.Add(createPassengerResult.Value);
+        }
+
+        return passengers;
     }
 }
