@@ -4,25 +4,22 @@ namespace Domain.Entities.Dictionaries;
 
 public class Airport : Entity<long>
 {
+    public static readonly Airport CDG = new(1, "CDG", "Аэропорт Шарль-Де-Голь", City.Paris);
+    public static readonly Airport LAX = new(2, "LAX", "Международный аэропорт Лос-Анджелес", City.LosAngeles);
+    public static readonly Airport DBX = new(3, "DBX", "Международный аэропорт Дубая", City.Dubai);
+    public static readonly Airport LHR = new(4, "LHR", "Лондонский аэропорт Хитроу", City.London);
+    public static readonly Airport TBS = new(5, "TBS", "Международный аэропорт Тбилиси имени Шота Руставели", City.Tbilisi);
+
     public string IATACode { get; private set; }
     public string Name { get; private set; }
 
-    public int CityId { get; private set; }
     public virtual City City { get; private set; }
 
-    private Airport(string IATACode, string name, City city)
+    private Airport(long id, string IATACode, string name, City city)
     {
+        Id = id;
         this.IATACode = IATACode;
         Name = name;
         City = city;
-    }
-
-    // for unit test
-    internal static Airport Create(long id, string IATACode, string name)
-    {
-        var airport = new Airport(IATACode, name, null);
-        airport.Id = id;
-
-        return airport;
     }
 }

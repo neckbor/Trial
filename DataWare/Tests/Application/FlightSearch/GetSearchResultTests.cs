@@ -56,7 +56,7 @@ public class GetSearchResultTests
     public async Task Should_ReturnError_WhenGetSearchResult_Failed()
     {
         // Arrange
-        var sampleSearchRequest = SearchRequest.Create("", Airport.Create(1, "JFK", "JFK"), Airport.Create(2, "LAX", "LAX"), DateOnly.FromDateTime(DateTime.UtcNow.AddDays(10)), 1).Value;
+        var sampleSearchRequest = SearchRequest.Create("", Airport.LHR, Airport.DBX, DateOnly.FromDateTime(DateTime.UtcNow.AddDays(10)), 1).Value;
         var query = new GetSearchResultsQuery(sampleSearchRequest.Id, new SearchResultFilterOptions());
 
         _repositoryMock.Setup(r => r.GetByKeyAsync<SearchRequest>(query.SearchRequestId)).ReturnsAsync(sampleSearchRequest);
@@ -74,7 +74,7 @@ public class GetSearchResultTests
     public async Task Should_ReturnSuccess_WhenGetSearchResult_Successed()
     {
         // Arrange
-        var sampleSearchRequest = SearchRequest.Create("", Airport.Create(1, "JFK", "JFK"), Airport.Create(2, "LAX", "LAX"), DateOnly.FromDateTime(DateTime.UtcNow.AddDays(10)), 1).Value;
+        var sampleSearchRequest = SearchRequest.Create("", Airport.TBS, Airport.LHR, DateOnly.FromDateTime(DateTime.UtcNow.AddDays(10)), 1).Value;
         var query = new GetSearchResultsQuery(sampleSearchRequest.Id, new SearchResultFilterOptions());
 
         _repositoryMock.Setup(r => r.GetByKeyAsync<SearchRequest>(query.SearchRequestId)).ReturnsAsync(sampleSearchRequest);

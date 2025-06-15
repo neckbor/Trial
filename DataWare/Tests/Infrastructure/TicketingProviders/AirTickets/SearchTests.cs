@@ -31,14 +31,14 @@ public class SearchTests
     {
         // Arrange
         var clientId = "";
-        var from = Airport.Create(1, "LAX", "LAX");
-        var to = Airport.Create(2, "CDG", "CDG");
+        var from = Airport.LAX;
+        var to = Airport.CDG;
         var departureDate = new DateOnly(2025, 7, 1);
         var passengerCount = 1;
 
         var searchRequest = SearchRequest.Create(clientId, from, to, departureDate, passengerCount).Value;
 
-        var airline = new Airline() { IATACode = "AF", ICAOCode = "AF" };
+        var airline = Airline.AirFrance;
 
         _airlineService.Setup(s => s.GetByICAOCodeAsync(It.IsAny<string>())).ReturnsAsync(airline);
         _airportService.Setup(s => s.GetByIATACodeAsync("LAX")).ReturnsAsync(from);
