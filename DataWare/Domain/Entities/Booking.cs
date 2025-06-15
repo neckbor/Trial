@@ -1,4 +1,5 @@
 ﻿using Domain.Entities.Dictionaries;
+using Domain.Errors;
 using Domain.Models;
 using Domain.Primitives;
 using Domain.Shared;
@@ -7,23 +8,28 @@ namespace Domain.Entities;
 
 public class Booking : Entity<Guid>
 {
-    private readonly List<Flight> _flights = [];
     private readonly List<Passenger> _passengers = [];
 
-    public string ClientId { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public BookingStatus Status { get; set; }
-    public decimal TotalPrice => _flights.Sum(f => f.TotalPrice);
-    public IReadOnlyCollection<Flight> Flights => _flights.AsReadOnly();
+    public string ClientId { get; private set; }
+    public DateTime CreatedAt { get; private set; }
+    public BookingStatus Status { get; private set; }
+    public TicketingProvider TicketingProvider { get; private set; }
+    public string ExternalBookkingId { get; private set; }
+    public Flight Flight { get; private set; }
     public IReadOnlyCollection<Passenger> Passengers => _passengers.AsReadOnly();
 
     private Booking(
         Guid id,
+        TicketingProvider ticketingProvider,
+        string externalBookingId,
         List<Passenger> passengers,
         DateTime createdAt,
         BookingStatus status,
         string clientId) 
     {
+        Id = id;
+        TicketingProvider = ticketingProvider;
+        ExternalBookkingId = externalBookingId;
         _passengers = passengers;
         CreatedAt = createdAt;
         Status = status;
@@ -31,7 +37,9 @@ public class Booking : Entity<Guid>
     }
 
     public static Result<Booking> Create(
-        List<BaseFlight> flightData,
+        TicketingProvider ticketetingProvider,
+        string externalBookingId,
+        BaseFlight baseFlight,
         List<Passenger> passengers,
         string clientId)
     {
@@ -39,18 +47,17 @@ public class Booking : Entity<Guid>
 
         var booking = new Booking(
             Guid.NewGuid(),
+            ticketetingProvider,
+            externalBookingId,
             passengers,
             now,
-            BookingStatus.Created,
+            BookingStatus.Booked,
             clientId);
 
-        foreach (var flight in flightData) 
+        var createFlightResult = booking.AddFlight(baseFlight);
+        if (createFlightResult.IsFailure)
         {
-            var createFlightResult = booking.AddFlight(flight);
-            if (createFlightResult.IsFailure)
-            {
-                return Result.Failure<Booking>(createFlightResult.Error);
-            }
+            return Result.Failure<Booking>(createFlightResult.Error);
         }
 
         return booking;
@@ -58,13 +65,18 @@ public class Booking : Entity<Guid>
 
     private Result AddFlight(BaseFlight flightModel)
     {
+        if (Flight is null)
+        {
+            return Result.Failure(DomainErrors.Booking.AlreadyHasFlight);
+        }
+
         var createFlightResult = Flight.Create(this, flightModel);
         if (createFlightResult.IsFailure) 
         {
             return Result.Failure(createFlightResult.Error);
         }
 
-        _flights.Add(createFlightResult.Value);
+        Flight = createFlightResult.Value;
 
         return Result.Success();
     }

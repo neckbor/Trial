@@ -46,4 +46,11 @@ public static class DomainErrors
             "SearchRequest.InvalidPassengerCount",
             "Некорректное значение количества пассажиров.");
     }
+
+    public static class Booking
+    {
+        public static readonly Error AlreadyHasFlight = Error.Conflict(
+            "Booking.AlreadyHasFlight",
+            "К брониорванию уже привязан перелёт.");
+    }
 }
