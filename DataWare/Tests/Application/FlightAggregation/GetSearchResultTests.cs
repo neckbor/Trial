@@ -82,7 +82,7 @@ public class GetSearchResultTests
     public async Task Should_ReturPending_WhenAnyProvider_Pending()
     {
         // Arrange
-        var sampleProvider = new TicketingProvider(1, "SAMPLEPROVIDER", "Тестовый провайдер");
+        var sampleProvider = TicketingProvider.AirTickets;
         Dictionary<TicketingProvider, SearchStatus> providerSearchStatuses = new Dictionary<TicketingProvider, SearchStatus>()
         {
             { sampleProvider, SearchStatus.Pending }
@@ -107,7 +107,7 @@ public class GetSearchResultTests
     public async Task Should_ReturnFlightsNotFoundError_WhenFligthEmpty_AndNoPendingProviderStatuses()
     {
         // Arrange
-        var sampleProvider = new TicketingProvider(1, "SAMPLEPROVIDER", "Тестовый провайдер");
+        var sampleProvider = TicketingProvider.AirTickets;
         Dictionary<TicketingProvider, SearchStatus> providerSearchStatuses = new Dictionary<TicketingProvider, SearchStatus>()
         {
             { sampleProvider, SearchStatus.Completed }
@@ -133,7 +133,7 @@ public class GetSearchResultTests
     public async Task Should_ReturnCompleted_WhenNoProvidersPending_AndFlightsIsNotEmpty()
     {
         // Arrange
-        var sampleProvider = new TicketingProvider(1, "SAMPLEPROVIDER", "Тестовый провайдер");
+        var sampleProvider = TicketingProvider.AirTickets;
         Dictionary<TicketingProvider, SearchStatus> providerSearchStatuses = new Dictionary<TicketingProvider, SearchStatus>()
         {
             { sampleProvider, SearchStatus.Completed }
