@@ -10,4 +10,5 @@ internal static class TableNames
     public const string TicketingProviders = nameof(TicketingProviders);
     public const string Flights = nameof(Flights);
     public const string FlightSegments = nameof(FlightSegments);
+    public const string Passengers = nameof(Passengers);
 }

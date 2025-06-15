@@ -13,6 +13,8 @@ public class Passenger : Entity<Guid>
     public DateOnly DateOfBirth { get; private set; }
     public Gender Gender { get; private set; }
     public string PassportNumber { get; private set; }
+
+    public int CountryId { get; private set; }
     public Country Country { get; private set; }
 
     private Passenger(
