@@ -1,7 +1,7 @@
 ﻿namespace Domain.Entities.Dictionaries;
 
-public enum Sex
+public enum Gender
 {
-    Male,
-    Female
+    Male = 1,
+    Female = 2
 }
