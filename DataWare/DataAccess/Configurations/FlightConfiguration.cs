@@ -32,6 +32,9 @@ internal class FlightConfiguration : IEntityTypeConfiguration<Flight>
             .HasForeignKey(f => f.TicketingProviderId)
             .OnDelete(DeleteBehavior.Restrict);
 
-
+        builder.HasOne(f => f.Booking)
+            .WithMany()
+            .HasForeignKey(f => f.BookingId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

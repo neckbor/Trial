@@ -9,6 +9,7 @@ public class Flight : Entity<Guid>
 {
     private readonly List<FlightSegment> _flightSegments = [];
 
+    public Guid BookingId { get; private set; }
     public Booking Booking { get; private set; }
 
     public long FromAirportId { get; private set; }
