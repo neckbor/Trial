@@ -14,5 +14,12 @@
   <ItemGroup>
     <ProjectReference Include="..\Application\Application.csproj" />
   </ItemGroup>
-
+	<ItemGroup>
+		<InternalsVisibleTo Include="Tests" />
+	</ItemGroup>
+	<ItemGroup>
+	  <None Update="TicketingProviders\AirTickets\airtickets-data.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
 </Project>

@@ -1,0 +1,64 @@
+[
+  {
+    "From": "LAX",
+    "To": "CDG",
+    "Departure": "2025-07-01T15:30:00Z",
+    "Arrival": "2025-07-02T07:10:00Z",
+    "Price": 890.00,
+    "Seats": 4,
+    "Segments": [
+      {
+        "AirlineCode": "AF",
+        "From": "LAX",
+        "To": "CDG",
+        "DepartureUtc": "2025-07-01T15:30:00Z",
+        "ArrivalUtc": "2025-07-02T07:10:00Z",
+        "AvailableSeats": 4
+      }
+    ]
+  },
+  {
+    "From": "ALA",
+    "To": "LHR",
+    "Departure": "2025-07-10T04:00:00Z",
+    "Arrival": "2025-07-10T15:20:00Z",
+    "Price": 720.00,
+    "Seats": 2,
+    "Segments": [
+      {
+        "AirlineCode": "BA",
+        "From": "ALA",
+        "To": "TBS",
+        "DepartureUtc": "2025-07-10T04:00:00Z",
+        "ArrivalUtc": "2025-07-10T06:10:00Z",
+        "AvailableSeats": 2
+      },
+      {
+        "AirlineCode": "BA",
+        "From": "TBS",
+        "To": "LHR",
+        "DepartureUtc": "2025-07-10T07:00:00Z",
+        "ArrivalUtc": "2025-07-10T15:20:00Z",
+        "AvailableSeats": 1
+      }
+    ]
+  },
+  {
+    "From": "TBS",
+    "To": "DXB",
+    "Departure": "2025-08-05T21:45:00Z",
+    "Arrival": "2025-08-06T03:30:00Z",
+    "Price": 340.50,
+    "Seats": 5,
+    "Segments": [
+      {
+        "AirlineCode": "EK",
+        "From": "TBS",
+        "To": "DXB",
+        "DepartureUtc": "2025-08-05T21:45:00Z",
+        "ArrivalUtc": "2025-08-06T03:30:00Z",
+        "AvailableSeats": 5
+      }
+    ]
+  }
+]
