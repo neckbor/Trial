@@ -4,6 +4,7 @@ namespace Domain.Models;
 
 public class BaseSegment
 {
+    public string FlightNumber { get; set; }
     public Airline Airline { get; set; }
     public Airport From { get; set; }
     public Airport To { get; set; }
