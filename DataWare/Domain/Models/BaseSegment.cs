@@ -9,4 +9,5 @@ public class BaseSegment
     public Airport To { get; set; }
     public DateTime DepartureDateUtc { get; set; }
     public DateTime ArrivalDateUtc { get; set; }
+    public int AvailableSeats { get; set; }
 }
