@@ -53,4 +53,38 @@ public static class DomainErrors
             "Booking.AlreadyHasFlight",
             "К брониорванию уже привязан перелёт.");
     }
+
+    public static class Passenger
+    {
+        public static readonly Error FirstnameIsEmpty = Error.Validation(
+            "Passenger.FirstnameIsEmpty",
+            "Необходимо задать имя пассажира.");
+
+        public static readonly Error LastnameIsEmpty = Error.Validation(
+            "Passenger.LastnameIsEmpty",
+            "Необходимо задать фамилию пассажира.");
+
+        public static readonly Error InvalidDateOfBirth = Error.Validation(
+            "Passenger.InvalidDateOfBirth",
+            "Некорректное значение даты рождения.");
+
+        public static readonly Error PassportNumberIsEmpty = Error.Validation(
+            "Passenger.PassportNumberIsEmpty",
+            "Необходимо ввести номер паспорта.");
+    }
+
+    public static class PassengerDocument
+    {
+        public static readonly Error NumberIsEmpty = Error.Validation(
+            "PassengerDocument.NumberIsEmpty",
+            "Необходимо задать номер документа.");
+
+        public static readonly Error InvalidIssuedAtDate = Error.Validation(
+            "PassengerDocument.InvalidIssuedAtDate",
+            "Некорректная дата выдачи документа.");
+
+        public static readonly Error InvalidExpiresAtDate = Error.Validation(
+            "PassengerDocument.InvalidIssuedAtDate",
+            "Некорректный срок действия документа.");
+    }
 }

@@ -1,49 +1,69 @@
 ﻿using Domain.Entities.Dictionaries;
+using Domain.Errors;
 using Domain.Primitives;
+using Domain.Shared;
 
 namespace Domain.Entities;
 
 public class Passenger : Entity<Guid>
 {
-    public string Name { get; private set; }
-    public string Surname { get; private set; }
-    public string? MiddleName { get; private set; }
+    public string Firstname { get; private set; }
+    public string Lastname { get; private set; }
+    public string? Middlename { get; private set; }
     public DateOnly DateOfBirth { get; private set; }
-    public Sex Sex { get; private set; }
-    public PassengerDocument Document { get; private set; }
+    public Gender Gender { get; private set; }
+    public string PassportNumber { get; private set; }
+    public Country Country { get; private set; }
 
-    private Passenger(Guid id,
-        string name,
-        string surname,
-        string? middleName,
+    private Passenger(
+        Guid id,
+        string firstname,
+        string lastname,
+        string? middlename,
         DateOnly dateOfBirth,
-        Sex sex)
+        Gender gender,
+        string passportNumber,
+        Country country)
     {
         Id = id;
-        Name = name;
-        Surname = surname;
-        MiddleName = middleName;
+        Firstname = firstname;
+        Lastname = lastname;
+        Middlename = middlename;
         DateOfBirth = dateOfBirth;
-        Sex = sex;
+        Gender = gender;
+        PassportNumber = passportNumber;
+        Country = country;
     }
 
-    public static Passenger Create(
-        string name,
-        string surname,
-        string? middleName,
+    public static Result<Passenger> Create(
+        string firstname,
+        string lastname,
+        string? middlename,
         DateOnly dateOfBirth,
-        Sex sex)
+        Gender gender,
+        string passportNumber,
+        Country country)
     {
-        return new(Guid.NewGuid(), name, surname, middleName, dateOfBirth, sex);
-    }
+        if (string.IsNullOrWhiteSpace(firstname))
+        {
+            return Result.Failure<Passenger>(DomainErrors.Passenger.FirstnameIsEmpty);
+        }
 
-    public void AddDocument(
-        DocumentType documentType,
-        string number,
-        DateOnly issuedDate,
-        DateOnly? validUntil,
-        Country issuedBy)
-    {
-        Document = PassengerDocument.Create(this, documentType, number, issuedDate, issuedDate, issuedBy);
+        if (string.IsNullOrWhiteSpace(lastname)) 
+        {
+            return Result.Failure<Passenger>(DomainErrors.Passenger.LastnameIsEmpty);
+        }
+
+        if (dateOfBirth >= DateOnly.FromDateTime(DateTime.UtcNow))
+        {
+            return Result.Failure<Passenger>(DomainErrors.Passenger.InvalidDateOfBirth);
+        }
+
+        if (string.IsNullOrWhiteSpace(passportNumber))
+        {
+            return Result.Failure<Passenger>(DomainErrors.Passenger.PassportNumberIsEmpty);
+        }
+
+        return new Passenger(Guid.NewGuid(), firstname, lastname, middlename, dateOfBirth, gender, passportNumber, country);
     }
 }
