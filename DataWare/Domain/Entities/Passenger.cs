@@ -17,6 +17,8 @@ public class Passenger : Entity<Guid>
     public int CountryId { get; private set; }
     public Country Country { get; private set; }
 
+    private Passenger() { }
+
     private Passenger(
         Guid id,
         string firstname,

@@ -13,6 +13,8 @@ public class Country : Entity<int>
     public string Code { get; private set; }
     public string Name { get; private set; }
 
+    private Country() { }
+
     private Country(int id, string code, string name)
     {
         Id = id;

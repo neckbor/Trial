@@ -23,6 +23,8 @@ public class Booking : Entity<Guid>
     public Flight Flight { get; private set; }
     public IReadOnlyCollection<Passenger> Passengers => _passengers.AsReadOnly();
 
+    private Booking() { }
+
     private Booking(
         Guid id,
         TicketingProvider ticketingProvider,

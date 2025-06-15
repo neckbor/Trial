@@ -15,14 +15,16 @@ public class FlightSegment : Entity<Guid>
     public int AirlineId { get; private set; }
     public Airline Airline { get; private set; }
 
-    public int FromAirportId { get; private set; }
+    public long FromAirportId { get; private set; }
     public Airport From { get; private set; }
 
-    public int ToAirportId { get; private set; }
+    public long ToAirportId { get; private set; }
     public Airport To { get; private set; }
 
     public DateTime DepartureDateUtc { get; private set; }
     public DateTime ArrivalDateUtc { get; private set; }
+
+    private FlightSegment() { }
 
     private FlightSegment(
         Flight flight,

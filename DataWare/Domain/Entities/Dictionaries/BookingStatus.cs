@@ -14,6 +14,8 @@ public class BookingStatus
     public string Code { get; private set; }
     public string Name { get; private set; }
 
+    private BookingStatus() { }
+
     private BookingStatus(int id, string code, string name)
     {
         Id = id;
@@ -34,4 +36,6 @@ public class BookingStatus
         return _byId.TryGetValue(id, out var result) ? result
                : Result.Failure<BookingStatus>(DomainErrors.BookingStatus.NotFound);
     }
+
+    public static IEnumerable<BookingStatus> GetAll() => _byId.Values.ToList();
 }

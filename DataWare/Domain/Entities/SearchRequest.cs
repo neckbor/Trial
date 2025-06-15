@@ -24,6 +24,8 @@ public class SearchRequest : Entity<Guid>
 
     public string SearchResultKey { get; private set; }
 
+    private SearchRequest() { }
+
     private SearchRequest(
         Guid id,
         bool aggregationStarted,
