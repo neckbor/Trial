@@ -95,4 +95,9 @@ internal class AIrTicketsTicketingProvider : ITicketingProvider
                                   f.To.Equals(request.To.IATACode.ToUpperInvariant()) &&
                                   DateOnly.FromDateTime(f.Departure) == request.DepartureDate).ToList();
     }
+
+    public Task<Result<BaseBooking>> BookAsync(string flightId, List<Passenger> passengers)
+    {
+        return Task.FromResult(Result.Success(new BaseBooking { Provider = Provider, BookingId = Guid.NewGuid().ToString() }));
+    }
 }
