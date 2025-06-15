@@ -151,7 +151,7 @@ internal class BookingService : IBookingService
         {
             _logger.LogError(ex,
                 "При сохранении бронирования {ExternalBookingId} провайдера {Provider} вылетело исключение",
-                booking.ExternalBookkingId,
+                booking.ExternalBookingId,
                 booking.TicketingProvider.Code);
 
             return Result.Failure<Guid>(ApplicationErrors.General.Unexpected);

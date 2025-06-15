@@ -12,9 +12,14 @@ public class Booking : Entity<Guid>
 
     public string ClientId { get; private set; }
     public DateTime CreatedAt { get; private set; }
+
+    public int StatusId { get; private set; }
     public BookingStatus Status { get; private set; }
+
+    public int TicketingProviderId { get; private set; }
     public TicketingProvider TicketingProvider { get; private set; }
-    public string ExternalBookkingId { get; private set; }
+
+    public string ExternalBookingId { get; private set; }
     public Flight Flight { get; private set; }
     public IReadOnlyCollection<Passenger> Passengers => _passengers.AsReadOnly();
 
@@ -29,7 +34,7 @@ public class Booking : Entity<Guid>
     {
         Id = id;
         TicketingProvider = ticketingProvider;
-        ExternalBookkingId = externalBookingId;
+        ExternalBookingId = externalBookingId;
         _passengers = passengers;
         CreatedAt = createdAt;
         Status = status;
