@@ -157,6 +157,8 @@ internal class FlightSearchService : IFlightSearchService
         if (searchRequest is null)
         {
             _logger.LogWarning("Запрос на поиск {SearchRequstId} не найден", searchRequestId);
+
+            return Result.Failure<SearchRequest>(FlightSearchErrors.NotFound);
         }
 
         return searchRequest;
