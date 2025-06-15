@@ -14,6 +14,11 @@ internal static class SearchResultExtensions
 
         var filtered = searchResult.Flights.AsEnumerable();
 
+        if (options.PassengerCount.HasValue)
+        {
+            filtered = filtered.Where(f => f.AvailableSeats >= options.PassengerCount);
+        }
+
         if (options.MaxPrice.HasValue)
         {
             filtered = filtered.Where(f => f.Fare.TotalPrice <=  options.MaxPrice.Value);

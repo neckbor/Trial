@@ -144,6 +144,7 @@ internal class FlightSearchService : IFlightSearchService
         }
         else
         {
+            query.FilterOptions.WithPassengerCount(request.PassengerCount);
             searchResult = searchResult.ApplyFiltersAndSorting(query.FilterOptions);
         }
         
