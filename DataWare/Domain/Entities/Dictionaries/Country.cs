@@ -19,4 +19,6 @@ public class Country : Entity<int>
         Code = code;
         Name = name;
     }
+
+    public static IEnumerable<Country> GetAll() => [France, USA, UK, Georgia, UAE];
 }
