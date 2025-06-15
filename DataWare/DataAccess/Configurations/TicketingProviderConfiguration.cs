@@ -1,5 +1,4 @@
-﻿using DataAccess.Constants;
-using Domain.Entities.Dictionaries;
+﻿using Domain.Entities.Dictionaries;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -9,8 +8,6 @@ internal class TicketingProviderConfiguration : IEntityTypeConfiguration<Ticketi
 {
     public void Configure(EntityTypeBuilder<TicketingProvider> builder)
     {
-        builder.ToTable(TableNames.TicketingProviders);
-
         builder.HasKey(p => p.Id);
 
         builder.Property(p => p.Code).IsRequired();

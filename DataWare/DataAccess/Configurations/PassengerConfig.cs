@@ -1,5 +1,4 @@
-﻿using DataAccess.Constants;
-using Domain.Entities;
+﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -9,8 +8,6 @@ internal class PassengerConfig : IEntityTypeConfiguration<Passenger>
 {
     public void Configure(EntityTypeBuilder<Passenger> builder)
     {
-        builder.ToTable(TableNames.Passengers);
-
         builder.HasKey(p => p.Id);
 
         builder.Property(p => p.Firstname).IsRequired();

@@ -1,5 +1,4 @@
-﻿using DataAccess.Constants;
-using Domain.Entities;
+﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -9,8 +8,6 @@ internal class BookingConfiguration : IEntityTypeConfiguration<Booking>
 {
     public void Configure(EntityTypeBuilder<Booking> builder)
     {
-        builder.ToTable(TableNames.Bookings);
-
         builder.HasKey(b => b.Id);
 
         builder.Property(b => b.ExternalBookingId).IsRequired();

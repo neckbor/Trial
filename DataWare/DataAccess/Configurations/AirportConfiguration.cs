@@ -1,5 +1,4 @@
-﻿using DataAccess.Constants;
-using Domain.Entities.Dictionaries;
+﻿using Domain.Entities.Dictionaries;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -9,8 +8,6 @@ internal class AirportConfiguration : IEntityTypeConfiguration<Airport>
 {
     public void Configure(EntityTypeBuilder<Airport> builder)
     {
-        builder.ToTable(TableNames.Airports);
-
         builder.HasKey(a => a.Id);
 
         builder.Property(a => a.IATACode).IsRequired();

@@ -1,5 +1,4 @@
-﻿using DataAccess.Constants;
-using Domain.Entities;
+﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -9,8 +8,6 @@ internal class FlightConfiguration : IEntityTypeConfiguration<Flight>
 {
     public void Configure(EntityTypeBuilder<Flight> builder)
     {
-        builder.ToTable(TableNames.Flights);
-
         builder.HasKey(f => f.Id);
 
         builder.Property(f => f.DepartureDate).IsRequired();
@@ -33,8 +30,8 @@ internal class FlightConfiguration : IEntityTypeConfiguration<Flight>
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(f => f.Booking)
-            .WithMany()
-            .HasForeignKey(f => f.BookingId)
+            .WithOne(b => b.Flight)
+            .HasForeignKey<Flight>(f => f.BookingId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

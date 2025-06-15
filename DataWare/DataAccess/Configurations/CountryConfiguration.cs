@@ -1,5 +1,4 @@
-﻿using DataAccess.Constants;
-using Domain.Entities.Dictionaries;
+﻿using Domain.Entities.Dictionaries;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -9,8 +8,6 @@ internal class CountryConfiguration : IEntityTypeConfiguration<Country>
 {
     public void Configure(EntityTypeBuilder<Country> builder)
     {
-        builder.ToTable(TableNames.Countries);
-
         builder.HasKey(c => c.Id);
 
         builder.Property(c => c.Code).IsRequired();

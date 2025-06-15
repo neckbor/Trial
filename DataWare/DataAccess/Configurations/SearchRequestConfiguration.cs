@@ -1,5 +1,4 @@
-﻿using DataAccess.Constants;
-using Domain.Entities;
+﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -9,8 +8,6 @@ internal class SearchRequestConfiguration : IEntityTypeConfiguration<SearchReque
 {
     public void Configure(EntityTypeBuilder<SearchRequest> builder)
     {
-        builder.ToTable(TableNames.SearchRequests);
-
         builder.HasKey(r => r.Id);
 
         builder.Property(r => r.AggregationStarted).IsRequired();

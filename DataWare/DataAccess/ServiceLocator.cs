@@ -37,6 +37,8 @@ internal static class ServiceLocator
             {
                 warnings.Ignore(CoreEventId.RedundantIndexRemoved);
             });
+
+            options.UseSnakeCaseNamingConvention();
         });
 
         return services;

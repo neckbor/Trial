@@ -1,5 +1,4 @@
-﻿using DataAccess.Constants;
-using Domain.Entities.Dictionaries;
+﻿using Domain.Entities.Dictionaries;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -9,8 +8,6 @@ internal class AirlineConfiguration : IEntityTypeConfiguration<Airline>
 {
     public void Configure(EntityTypeBuilder<Airline> builder)
     {
-        builder.ToTable(TableNames.Airlines);
-
         builder.HasKey(a => a.Id);
 
         builder.Property(a => a.Name).IsRequired();
