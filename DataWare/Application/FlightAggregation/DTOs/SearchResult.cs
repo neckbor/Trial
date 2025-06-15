@@ -33,4 +33,9 @@ public class SearchResult
     {
         return new SearchResult(flights, SearchStatus.Completed, null);
     }
+
+    public SearchResult WithFlights(List<BaseFlight> flights)
+    {
+        return new SearchResult(flights, this.Status, this.Error);
+    }
 }
