@@ -8,7 +8,7 @@ namespace DataAccess;
 
 internal static class ServiceLocator
 {
-    public static void ConfigureDataAccessServices(IServiceCollection services, IConfiguration configuration)
+    public static void RegisterDataAccessServices(IServiceCollection services, IConfiguration configuration)
     {
         services.ConfigureDbContext(configuration);
 

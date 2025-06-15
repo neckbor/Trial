@@ -6,7 +6,7 @@ namespace Infrastructure;
 
 public static class ServiceLocator
 {
-    public static void ConfigureInfastructureServices(IServiceCollection services)
+    public static void RegisterInfastructureServices(IServiceCollection services)
     {
         services.ConfigureBackgroundJobs();
 
