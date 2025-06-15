@@ -6,4 +6,5 @@ internal static class TableNames
     public const string Airlines = nameof(Airlines);
     public const string Airports = nameof(Airports);
     public const string Cities = nameof(Cities);
+    public const string Bookings = nameof(Bookings);
 }
