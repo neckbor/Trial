@@ -15,4 +15,6 @@ public class TicketingProvider : Entity<int>
         Code = code;
         Name = name;
     }
+
+    public static IEnumerable<TicketingProvider> GetAll() => [AirTickets];
 }

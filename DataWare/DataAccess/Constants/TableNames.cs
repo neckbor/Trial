@@ -7,4 +7,5 @@ internal static class TableNames
     public const string Airports = nameof(Airports);
     public const string Cities = nameof(Cities);
     public const string Bookings = nameof(Bookings);
+    public const string TicketingProviders = nameof(TicketingProviders);
 }
