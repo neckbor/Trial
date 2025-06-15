@@ -12,6 +12,7 @@ public class Airline : Entity<int>
     public string ICAOCode { get; private set; }
     public string Name { get; private set; }
 
+    public int CountryId { get; private set; }
     public virtual Country Country { get; private set; }
 
     private Airline(int id, string iATACode, string iCAOCode, string name, Country country)
@@ -22,4 +23,6 @@ public class Airline : Entity<int>
         Name = name;
         Country = country;
     }
+
+    public static IEnumerable<Airline> GetAll() => [AirFrance, BritishAirways, Emirates];
 }
