@@ -8,15 +8,25 @@ namespace Domain.Entities;
 
 public class FlightSegment : Entity<Guid>
 {
+    public Guid FlightId { get; private set; }
     public Flight Flight { get; private set; }
+    public string FlightNumber { get; private set; }
+
+    public int AirlineId { get; private set; }
     public Airline Airline { get; private set; }
+
+    public int FromAirportId { get; private set; }
     public Airport From { get; private set; }
+
+    public int ToAirportId { get; private set; }
     public Airport To { get; private set; }
+
     public DateTime DepartureDateUtc { get; private set; }
     public DateTime ArrivalDateUtc { get; private set; }
 
     private FlightSegment(
         Flight flight,
+        string flightNumber,
         Airline airline,
         Airport from,
         Airport to,
@@ -24,6 +34,7 @@ public class FlightSegment : Entity<Guid>
         DateTime arrivalDateUtc)
     {
         Flight = flight;
+        FlightNumber = flightNumber;
         Airline = airline;
         From = from;
         To = to;
@@ -40,6 +51,7 @@ public class FlightSegment : Entity<Guid>
 
         return new FlightSegment(
             flight, 
+            segmentModel.FlightNumber,
             segmentModel.Airline, 
             segmentModel.From, 
             segmentModel.To, 
