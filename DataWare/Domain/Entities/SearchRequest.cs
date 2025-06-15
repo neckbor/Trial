@@ -9,8 +9,13 @@ public class SearchRequest : Entity<Guid>
 {
     public bool AggregationStarted { get; private set; }
     public string ClientId { get; private set; }
+
+    public long FromAirportId { get; private set; }
     public Airport From { get; private set; }
+
+    public long ToAirportId { get; private set; }
     public Airport To { get; private set; }
+
     public DateOnly DepartureDate { get; private set; }
     public int PassengerCount { get; private set; }
 
