@@ -6,5 +6,5 @@ public static class CacheErrors
 {
     public static readonly Error Expired = Error.NotFound(
         "Cache.Expired",
-        "Истёк срок действия кэшированных данных.");
+        "Истёк срок действия кэшированных данных. Повторите поиск.");
 }
