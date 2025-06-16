@@ -3,6 +3,7 @@ using Application.Booking.DTOs;
 using AutoMapper.Configuration.Annotations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 using WebApi.Extensions;
 
 namespace WebApi.Controllers
@@ -20,6 +21,10 @@ namespace WebApi.Controllers
             _linkGenerator = linkGenerator;
         }
 
+        [SwaggerOperation(
+            Summary = "Забронировать перелёт",
+            Description = "Для бронирования перелёта необходимо знать свой id запроса на поиск (он выдаётся после запроса POST /api/Search) " +
+            "и id перелёта (поле FlightId из резльутатов поиска GET /api/Search/results)")]
         [HttpPost]
         public async Task<IResult> CreateAsync([FromBody] CreateBookingCommand command)
         {
@@ -40,6 +45,9 @@ namespace WebApi.Controllers
             return Results.Created(location, bookingId);
         }
 
+        [SwaggerOperation(
+            Summary = "Получить информацию по броyированию",
+            Description = "Для получения информации необходимо знать свой id бронирования (он выдаётся в результате работы POST /api/Bookings)")]
         [ActionName(nameof(GetAsync))]
         [HttpGet("{bookingId:guid}")]
         public async Task<IResult> GetAsync(Guid bookingId)

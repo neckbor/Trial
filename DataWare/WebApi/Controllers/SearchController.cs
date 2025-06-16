@@ -2,6 +2,7 @@
 using Application.FlightSearch.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 using WebApi.Contracts.FlightSearch;
 using WebApi.Extensions;
 
@@ -20,6 +21,9 @@ namespace WebApi.Controllers
             _linkGenerator = linkGenerator;
         }
 
+        [SwaggerOperation(
+            Summary = "Создать запрос на поиск перелётов (Надётся билет на дату 2025-07-01 из LAX в CDG)",
+            Description = "После создания запроса на поиск система пришлёт вам id вышего запроса. Его необходимо отправить в GET /api/Sarch/results для получения результатов")]
         [HttpPost]
         public async Task<IResult> PostSearchAsync(CreateFlightSearchRequest request)
         {
@@ -43,6 +47,11 @@ namespace WebApi.Controllers
             return Results.Created(location, searchRequestId);
         }
 
+        [SwaggerOperation(
+            Summary = "Получить результаты поиска",
+            Description = "Для получения результатов поиска по вашему запросу, необходимо отправить id вашего запроса, который был сгенерирован после вызова POST /api/Search." +
+            "Для бронирования перелёта, необходимо вызвать метод POST /api/Bookings, отправив в него id вашего запроса на поиск и id конркетного перелёта из представленных результатов " +
+            "(поле FlightId)")]
         [ActionName(nameof(GetSearchResultsAsync))]
         [HttpGet("results/{requestId:guid}")]
         public async Task<IResult> GetSearchResultsAsync(Guid requestId, 
