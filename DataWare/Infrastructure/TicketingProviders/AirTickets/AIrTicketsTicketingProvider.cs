@@ -82,7 +82,7 @@ internal class AIrTicketsTicketingProvider : ITicketingProvider
 
     private async Task<Result<List<AirTicketsFlight>>> GetFlights(SearchRequest request)
     {
-        var jsonPath = Path.Combine("TicketingProviders", "AirTickets", "airtickets-data.json");
+        var jsonPath = Path.Combine(AppContext.BaseDirectory, "TicketingProviders", "AirTickets", "airtickets-data.json");
         var json = await File.ReadAllTextAsync(jsonPath);
         var flights = JsonSerializer.Deserialize<List<AirTicketsFlight>>(json);
 
