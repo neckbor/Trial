@@ -1,4 +1,5 @@
 ﻿using Infrastructure.BackgroundJobs;
+using Infrastructure.Cache;
 using Infrastructure.TicketingProviders;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,5 +12,7 @@ public static class ServiceLocator
         services.ConfigureBackgroundJobs();
 
         services.RegisterTicketingProviders();
+
+        services.ConfigureCache();
     }
 }
