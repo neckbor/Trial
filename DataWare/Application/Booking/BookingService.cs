@@ -5,6 +5,7 @@ using Application.FlightAggregation;
 using Application.FlightSearch;
 using Application.InfrastructureAbstractions;
 using Domain.Entities;
+using Domain.Models;
 using Domain.Primitives;
 using Domain.Repositories;
 using Domain.Shared;
@@ -191,5 +192,18 @@ internal class BookingService : IBookingService
         }
 
         return passengers;
+    }
+
+    public async Task<Result<BookingDto>> GetByIdAsync(Guid id)
+    {
+        var booking = await _bookingRepository.GetByKeyAsync<BookingDto>(id);
+        if (booking is null)
+        {
+            _logger.LogWarning("Не найдено бронирование {Booking}", id);
+
+            return Result.Failure<BookingDto>(BookingErrors.NotFound);
+        }
+
+        return booking;
     }
 }

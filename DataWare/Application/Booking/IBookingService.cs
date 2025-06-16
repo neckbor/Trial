@@ -6,4 +6,5 @@ namespace Application.Booking;
 public interface IBookingService
 {
     Task<Result<Guid>> CreateBookingAsync(CreateBookingCommand command);
+    Task<Result<BookingDto>> GetByIdAsync(Guid id);
 }

@@ -11,4 +11,8 @@ public static class BookingErrors
     public static readonly Error PassengerCountChanged = Error.Conflict(
         "Booking.PassengerCountChanged",
         "Передано другое количество пассажиров.");
+
+    public static readonly Error NotFound = Error.NotFound(
+        "Booking.NotFound",
+        "Бронирование не найдено.");
 }
