@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace DataAccess;
+namespace Application;
 
 public class AssemblyReference
 {
