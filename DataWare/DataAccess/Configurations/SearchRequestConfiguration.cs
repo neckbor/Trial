@@ -26,5 +26,8 @@ internal class SearchRequestConfiguration : IEntityTypeConfiguration<SearchReque
             .WithMany()
             .HasForeignKey(r => r.ToAirportId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        builder.Navigation(r => r.From).AutoInclude();
+        builder.Navigation(r => r.To).AutoInclude();
     }
 }
