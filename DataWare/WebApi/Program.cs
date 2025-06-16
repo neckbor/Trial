@@ -17,6 +17,11 @@ namespace WebApi
             builder.Host.UseSerilog((context, configuration) =>
                 configuration.ReadFrom.Configuration(context.Configuration));
 
+            builder.Services.AddAutoMapper(
+                DataAccess.AssemblyReference.Assembly, 
+                Infrastructure.AssemblyReference.Assembly,
+                Application.AssemblyReference.Assembly);
+
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
