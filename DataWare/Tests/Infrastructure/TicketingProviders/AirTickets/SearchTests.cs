@@ -1,5 +1,6 @@
 ﻿using Application.Dictionaries.Airlines;
 using Application.Dictionaries.Airports;
+using Application.FlightSearch.DTOs;
 using Domain.Entities;
 using Domain.Entities.Dictionaries;
 using FluentAssertions;
@@ -36,7 +37,13 @@ public class SearchTests
         var departureDate = new DateOnly(2025, 7, 1);
         var passengerCount = 1;
 
-        var searchRequest = SearchRequest.Create(clientId, from, to, departureDate, passengerCount).Value;
+        var searchRequestDto = new SearchRequestDto
+        {
+            SearchResultKey = "sample-key",
+            From = new AirportDto { Id = from.Id, IATACode = from.IATACode },
+            To = new AirportDto { Id = to.Id, IATACode = to.IATACode },
+            DepartureDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(3))
+        };
 
         var airline = Airline.AirFrance;
 
@@ -45,7 +52,7 @@ public class SearchTests
         _airportService.Setup(s => s.GetByIATACodeAsync("CDG")).ReturnsAsync(to);
 
         // Act 
-        var result = await _provider.SearchAsync(searchRequest);
+        var result = await _provider.SearchAsync(searchRequestDto);
         
         //Assert
         result.IsSuccess.Should().BeTrue();

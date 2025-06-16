@@ -4,6 +4,7 @@ using Domain.Entities.Dictionaries;
 using Domain.Models;
 using Domain.Shared;
 using FluentAssertions;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
@@ -14,14 +15,16 @@ public class GetSearchResultTests
 {
     private readonly ILogger<FlightAggregator> _logger = NullLogger<FlightAggregator>.Instance;
     private readonly Mock<ISearchResultCache> _cacheMock = new();
+    private readonly Mock<IServiceScopeFactory> _scopeFactoryMock = new();
     private readonly FlightAggregator _flightAggregator;
 
     public GetSearchResultTests()
     {
         _flightAggregator = new FlightAggregator(
             _logger,
-            _cacheMock.Object, 
-            new List<ITicketingProvider>());
+            _cacheMock.Object,
+            new List<ITicketingProvider>(),
+            _scopeFactoryMock.Object);
     }
 
     [Fact]

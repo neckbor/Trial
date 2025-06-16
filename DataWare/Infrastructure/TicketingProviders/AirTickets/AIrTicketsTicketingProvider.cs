@@ -1,5 +1,6 @@
 ﻿using Application.Dictionaries.Airlines;
 using Application.Dictionaries.Airports;
+using Application.FlightSearch.DTOs;
 using Application.InfrastructureAbstractions;
 using Domain.Entities;
 using Domain.Entities.Dictionaries;
@@ -26,7 +27,7 @@ internal class AIrTicketsTicketingProvider : ITicketingProvider
         _airportService = airportService;
     }
 
-    public async Task<Result<List<BaseFlight>>> SearchAsync(SearchRequest request)
+    public async Task<Result<List<BaseFlight>>> SearchAsync(SearchRequestDto request)
     {
         try
         {
@@ -34,8 +35,8 @@ internal class AIrTicketsTicketingProvider : ITicketingProvider
             if (getFlightsResult.IsFailure)
             {
                 _logger.LogWarning(
-                    "Ошибка при поиске перелётов по запросу {SearchRequestId} {ErrorCode}: {ErrorMessage}",
-                    request.Id,
+                    "Ошибка при поиске перелётов по запросу {SearchResultKey} {ErrorCode}: {ErrorMessage}",
+                    request.SearchResultKey,
                     getFlightsResult.Error.Code,
                     getFlightsResult.Error.Message);
 
@@ -80,7 +81,7 @@ internal class AIrTicketsTicketingProvider : ITicketingProvider
         }
     }
 
-    private async Task<Result<List<AirTicketsFlight>>> GetFlights(SearchRequest request)
+    private async Task<Result<List<AirTicketsFlight>>> GetFlights(SearchRequestDto request)
     {
         var jsonPath = Path.Combine(AppContext.BaseDirectory, "TicketingProviders", "AirTickets", "airtickets-data.json");
         var json = await File.ReadAllTextAsync(jsonPath);
