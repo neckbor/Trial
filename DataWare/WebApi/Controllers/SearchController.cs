@@ -9,12 +9,12 @@ namespace WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class FlightSearchController : ControllerBase
+    public class SearchController : ControllerBase
     {
         private readonly IFlightSearchService _flightSearchService;
         private readonly LinkGenerator _linkGenerator;
 
-        public FlightSearchController(IFlightSearchService flightSearchService, LinkGenerator linkGenerator)
+        public SearchController(IFlightSearchService flightSearchService, LinkGenerator linkGenerator)
         {
             _flightSearchService = flightSearchService;
             _linkGenerator = linkGenerator;
@@ -37,14 +37,14 @@ namespace WebApi.Controllers
             var location = _linkGenerator.GetPathByAction(
                 HttpContext,
                 action: nameof(GetSearchResultsAsync),
-                controller: "FlightSearch",
+                controller: "Search",
                 values: new { Id = searchRequestId });
 
             return Results.Created(location, searchRequestId);
         }
 
-        [HttpGet("{requestId:guid}")]
         [ActionName(nameof(GetSearchResultsAsync))]
+        [HttpGet("results/{requestId:guid}")]
         public async Task<IResult> GetSearchResultsAsync(Guid requestId, 
             [FromQuery] int maxTranfers,
             [FromQuery] decimal? maxPrice,  
