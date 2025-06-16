@@ -1,4 +1,5 @@
 ﻿using DataAccess.Repositories;
+using Domain.Primitives;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
@@ -13,6 +14,8 @@ public static class ServiceLocator
         services.ConfigureDbContext(configuration);
 
         services.RegisterRepositories();
+
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
     }
 
     private static IServiceCollection ConfigureDbContext(this IServiceCollection services, IConfiguration configuration)
