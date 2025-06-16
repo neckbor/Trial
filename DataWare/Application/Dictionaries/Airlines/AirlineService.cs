@@ -28,4 +28,17 @@ internal class AirlineService : IAirlineService
 
         return airline;
     }
+
+    public async Task<Result<Airline>> GetByIATACodeAsync(string IATACode)
+    {
+        var airline = await _airlineRepository.FirstOrDefaultAsync<Airline>(a => a.IATACode.Equals(IATACode.ToUpperInvariant()));
+        if (airline is null)
+        {
+            _logger.LogWarning("Авиакомпания по коду IATA {IATACode} не найдена", IATACode);
+
+            return Result.Failure<Airline>(AirlineErrors.NotFound);
+        }
+
+        return airline;
+    }
 }

@@ -26,7 +26,7 @@ internal class AirTicketsMapper
 
         foreach (var s in source.Segments)
         {
-            var getAirlineResult = await _airlineService.GetByICAOCodeAsync(s.AirlineCode);
+            var getAirlineResult = await _airlineService.GetByIATACodeAsync(s.AirlineCode);
 
             if (getAirlineResult.IsFailure)
             {
