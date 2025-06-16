@@ -4,20 +4,25 @@ namespace Domain.Models;
 
 public class BaseFlight
 {
+    private string _flightId = "";
+
     public TicketingProvider TicketingProvider { get; set; }
     public string FlightId
     {
         get
         {
-            if (string.IsNullOrEmpty(FlightId))
+            if (string.IsNullOrEmpty(_flightId))
             {
-                return $"{TicketingProvider.Code}:{string.Join(":", Segments.Select(s => s.FlightNumber))}";
+                _flightId = $"{TicketingProvider.Code}:{string.Join(":", Segments.Select(s => s.FlightNumber))}";
             }
 
-            return FlightId;
+            return _flightId;
         }
 
-        set { }
+        set 
+        {
+            _flightId = value;
+        }
     }
     public Airport From 
     {
