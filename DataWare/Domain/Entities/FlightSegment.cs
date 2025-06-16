@@ -37,9 +37,9 @@ public class FlightSegment : Entity<Guid>
     {
         Flight = flight;
         FlightNumber = flightNumber;
-        Airline = airline;
-        From = from;
-        To = to;
+        AirlineId = airline.Id;
+        FromAirportId = from.Id;
+        ToAirportId = to.Id;
         DepartureDateUtc = departureDateUtc;
         ArrivalDateUtc = arrivalDateUtc;
     }

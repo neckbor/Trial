@@ -35,11 +35,11 @@ public class Booking : Entity<Guid>
         string clientId) 
     {
         Id = id;
-        TicketingProvider = ticketingProvider;
+        TicketingProviderId = ticketingProvider.Id;
         ExternalBookingId = externalBookingId;
         _passengers = passengers;
         CreatedAt = createdAt;
-        Status = status;
+        StatusId = status.Id;
         ClientId = clientId;
     }
 
@@ -72,7 +72,7 @@ public class Booking : Entity<Guid>
 
     private Result AddFlight(BaseFlight flightModel)
     {
-        if (Flight is null)
+        if (Flight is not null)
         {
             return Result.Failure(DomainErrors.Booking.AlreadyHasFlight);
         }

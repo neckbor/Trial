@@ -39,11 +39,11 @@ public class Flight : Entity<Guid>
         decimal totalPrice)
     {
         Booking = booking;
-        From = from;
-        To = to;
+        FromAirportId = from.Id;
+        ToAirportId = to.Id;
         DepartureDate = departureDate;
         ArrivalDate = arrivalDate;
-        TicketingProvider = ticketingProvider;
+        TicketingProviderId = ticketingProvider.Id;
         TotalPrice = totalPrice;
     }
 
