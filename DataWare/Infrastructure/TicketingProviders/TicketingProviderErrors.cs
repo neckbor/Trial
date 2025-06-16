@@ -16,5 +16,9 @@ public static class TicketingProviderErrors
     public static readonly Func<TicketingProvider, Error> ProviderUnavailable = provider => Error.Failure(
         $"TicketingProvider.{provider.Code}.Unavailable",
         $"Не удалось получить данные от провайдера {provider.Name}");
+
+    public static readonly Func<TicketingProvider, Error> ParsingFailed = provider => Error.Validation(
+        $"TicketingProvider.{provider.Code}.ParsingFailed",
+        $"Не удалось распарсить данные от провайдера {provider.Name}");
 }
 

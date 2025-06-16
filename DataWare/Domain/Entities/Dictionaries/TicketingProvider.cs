@@ -5,6 +5,7 @@ namespace Domain.Entities.Dictionaries;
 public class TicketingProvider : Entity<int>
 {
     public static readonly TicketingProvider AirTickets = new(1, "AIRTICKETS", "AirTickets.Fly");
+    public static readonly TicketingProvider SkyTickets = new(2, "SKYTICKETS", "SKY Tickets");
 
     public string Code { get; private set; }
     public string Name { get; private set; }
@@ -18,5 +19,5 @@ public class TicketingProvider : Entity<int>
         Name = name;
     }
 
-    public static IEnumerable<TicketingProvider> GetAll() => [AirTickets];
+    public static IEnumerable<TicketingProvider> GetAll() => [AirTickets, SkyTickets];
 }

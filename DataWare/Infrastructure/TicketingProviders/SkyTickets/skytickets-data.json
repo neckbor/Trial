@@ -1,0 +1,22 @@
+[
+  {
+    "Id": "b7cdd102-5f36-421e-aed9-82f7f364e220",
+    "FromAirportCode": "LAX",
+    "ToAirportCode": "CDG",
+    "DepartureIso": "2025-07-01T16:00:00Z",
+    "ArrivalIso": "2025-07-02T07:30:00Z",
+    "Price": 880.0,
+    "Seats": 5,
+    "Legs": [
+      {
+        "FlightNumber": "SD123",
+        "Airline": "AF",
+        "Origin": "LAX",
+        "Destination": "CDG",
+        "DepUtc": "2025-07-01T16:00:00Z",
+        "ArrUtc": "2025-07-02T07:30:00Z",
+        "AvailableSeats": 5
+      }
+    ]
+  }
+]
