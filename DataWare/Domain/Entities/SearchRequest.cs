@@ -77,7 +77,7 @@ public class SearchRequest : Entity<Guid>
         return new SearchRequest(Guid.NewGuid(), false, clientId, from, to, departureDate, passengerCount, now, seatchKey);
     }
 
-    private static string BuildSearchKey(Airport from, Airport to, DateOnly departureDate) => $"{from.IATACode}:{to.IATACode}:{departureDate:DDMMYYYY}";
+    private static string BuildSearchKey(Airport from, Airport to, DateOnly departureDate) => $"{from.IATACode}:{to.IATACode}:{departureDate:ddMMyyyy}";
 
     public void MarkAggregationStarted() => AggregationStarted = true;
 }
