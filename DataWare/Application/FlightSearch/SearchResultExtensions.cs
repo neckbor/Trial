@@ -51,6 +51,12 @@ internal static class SearchResultExtensions
             FlightSearchResultSortOption.Duration => options.SortDescending
                 ? filtered.OrderByDescending(f => f.ArrivalDate - f.DepartureDate)
                 : filtered.OrderBy(f => f.ArrivalDate - f.DepartureDate),
+
+           FlightSearchResultSortOption.TransferCount => options.SortDescending
+                ? filtered.OrderByDescending(f => f.Segments.Count)
+                : filtered.OrderBy(f => f.Segments.Count),
+
+           _ => filtered
         };
 
         return searchResult.WithFlights(filtered.ToList());
