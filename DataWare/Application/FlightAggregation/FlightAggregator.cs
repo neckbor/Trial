@@ -1,9 +1,11 @@
 ﻿using Application.FlightAggregation.DTOs;
+using Application.FlightSearch.DTOs;
 using Application.InfrastructureAbstractions;
 using Domain.Entities;
 using Domain.Entities.Dictionaries;
 using Domain.Models;
 using Domain.Shared;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace Application.FlightAggregation;
@@ -13,15 +15,18 @@ internal class FlightAggregator : IFlightAggregator
     private readonly ILogger<FlightAggregator> _logger;
     private readonly ISearchResultCache _searchResultCache;
     private readonly IEnumerable<ITicketingProvider> _ticketingProviders;
+    private readonly IServiceScopeFactory _serviceScopeFactory;
 
     public FlightAggregator(
-        ILogger<FlightAggregator> logger, 
-        ISearchResultCache searchResultCache, 
-        IEnumerable<ITicketingProvider> ticketingProviders)
+        ILogger<FlightAggregator> logger,
+        ISearchResultCache searchResultCache,
+        IEnumerable<ITicketingProvider> ticketingProviders,
+        IServiceScopeFactory serviceScopeFactory)
     {
         _searchResultCache = searchResultCache;
         _ticketingProviders = ticketingProviders;
         _logger = logger;
+        _serviceScopeFactory = serviceScopeFactory;
     }
 
     public async Task<Result<SearchResult>> GetSearchResultAsync(string searchKey)
@@ -65,7 +70,7 @@ internal class FlightAggregator : IFlightAggregator
         return SearchResult.Completed(flights);
     }
 
-    public async Task<Result> AggregateAsync(SearchRequest request)
+    public async Task<Result> AggregateAsync(SearchRequestDto request)
     {
         var searchKey = request.SearchResultKey;
 
@@ -105,12 +110,23 @@ internal class FlightAggregator : IFlightAggregator
         return Result.Success();
     }
 
-    private async Task RunProviderAsync(ITicketingProvider provider, SearchRequest request)
+    private async Task RunProviderAsync(ITicketingProvider providerToRun, SearchRequestDto request)
     {
         var searchKey = request.SearchResultKey;
 
+        using var scope = _serviceScopeFactory.CreateScope();
+        var scopedCache = scope.ServiceProvider.GetRequiredService<ISearchResultCache>();
+
         try
         {
+            var provider = scope.ServiceProvider.GetServices<ITicketingProvider>().FirstOrDefault(s => s.Provider == providerToRun.Provider);
+            if (provider is null)
+            {
+                _logger.LogWarning("Не найдена имплеметнация провайдера {Provider}", providerToRun.Provider.Code);
+
+                return;
+            }
+
             var searchResult = await provider.SearchAsync(request);
             if (searchResult.IsFailure)
             {
@@ -119,22 +135,22 @@ internal class FlightAggregator : IFlightAggregator
                     searchResult.Error.Code,
                     searchResult.Error.Message);
 
-                await _searchResultCache.SetProviderSearchStatusAsync(searchKey, provider.Provider, SearchStatus.Failed);
+                await scopedCache.SetProviderSearchStatusAsync(searchKey, provider.Provider, SearchStatus.Failed);
                 return;
             }
 
             var flights = searchResult.Value;
 
-            await _searchResultCache.AddFlightsAsync(searchKey, flights);
-            await _searchResultCache.SetProviderSearchStatusAsync(searchKey, provider.Provider, SearchStatus.Completed);
+            await scopedCache.AddFlightsAsync(searchKey, flights);
+            await scopedCache.SetProviderSearchStatusAsync(searchKey, provider.Provider, SearchStatus.Completed);
         }
         catch (Exception ex) 
         {
             _logger.LogError(ex,
                 "Исключеине при поиске перелётов в провайдере {TicketingProvider}",
-                provider.Provider.Code);
+                providerToRun.Provider.Code);
 
-            await _searchResultCache.SetProviderSearchStatusAsync(searchKey, provider.Provider, SearchStatus.Failed);
+            await scopedCache.SetProviderSearchStatusAsync(searchKey, providerToRun.Provider, SearchStatus.Failed);
         }
     }
 
