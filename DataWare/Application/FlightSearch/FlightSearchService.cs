@@ -86,11 +86,20 @@ internal class FlightSearchService : IFlightSearchService
         var unprocessed = await _searchRequestRepository.SearchAsync<SearchRequest>(r => !r.AggregationStarted);
 
         var searchGroups = unprocessed.GroupBy(s => s.SearchResultKey);
+        if (!searchGroups.Any()) 
+        {
+            return Result.Success();
+        }
+
         foreach (var group in searchGroups)
         {
             string searchKey = group.Key;
 
-            await _flightAggregator.AggregateAsync(group.First());
+            var representative = group.First();
+
+            var dto = await _searchRequestRepository.GetByKeyAsync<SearchRequestDto>(representative.Id);
+            
+            await _flightAggregator.AggregateAsync(dto);
 
             foreach (var request in group)
             {
