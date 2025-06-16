@@ -32,6 +32,12 @@ namespace WebApi
 
             var app = builder.Build();
 
+            if (app.Configuration.GetValue("ConnectionSettings:MigrateDatabase", false))
+            {
+                using IServiceScope scope = app.Services.CreateScope();
+                DataAccess.Initializers.DbInitialzier.ApplyMigration(scope);
+            }
+
             // Configure the HTTP request pipeline.
             app.UseSwagger();
             app.UseSwaggerUI();
